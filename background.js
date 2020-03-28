@@ -6,15 +6,12 @@ console.log('background running');
 
 // when the extension is installed, show everything
 chrome.runtime.onInstalled.addListener(function(){
-    chrome.storage.sync.set({
-        show: true, function(){
-            console.log('Show everything on YouTube')
-        }
-    })
+    chrome.storage.sync.set({show: true})
 })
 
-// function to toggle hiding stuff or showing everthing
-function toggle(){
+chrome.browserAction.onClicked.addListener(toggleStatus)
+
+function toggleStatus(tab){
     chrome.storage.sync.get('show', function(data){
         var status = data.show;
         // toggle status
@@ -28,18 +25,19 @@ function toggle(){
             }
         });
         //update current page if it is in pages
-
+        if(pages.indexOf(tab.url) != -1){
+            let msg = {
+                url: tab.url,
+                show: data.show
+            }
+            chrome.tabs.sendMessage(tab.id, msg)
+            console.log(tab.url)
+            console.log(data.show)
+        }
     });
-};
 
-// toggle when clicking on the extension icon
-chrome.browserAction.onClicked.addListener(
-    function(tab){
-        toggle()
-        sendInfo(tab)
-    });
 
-toggle();
+}
 
 // send message to content-script whether elements have to be hidden or not
 // maybe you could speed this up if the message was only sent if stuff should be hidden
@@ -48,23 +46,20 @@ toggle();
 // recommendations for a short period of time as long as the website hasn't loaded completely
 //chrome.webNavigation.onHistoryStateUpdated.addListener(sendInfo)
 //chrome.webNavigation.onHistoryStateUpdated.addListener(sendInfo)
-chrome.tabs.onUpdated.addListener(
-    function(tabId, changeInfo, tab){
-        if(changeInfo.status === 'complete'){
-            sendInfo(tab)
-        }
-        
-    })
+chrome.tabs.onUpdated.addListener(sendStatus)
 
-function sendInfo(tab){
-    if(pages.indexOf(tab.url) != -1){
-        chrome.storage.sync.get('show', function(data){
-            let msg = {
-                url: tab.url,
-                show: data.show
-            }
-            chrome.tabs.sendMessage(tab.id, msg)
-            console.log(tab.url)
-        })
+function sendStatus(tabId, changeInfo, tab){
+    if(changeInfo.status === 'complete'){
+        if(pages.indexOf(tab.url) != -1){
+            chrome.storage.sync.get('show', function(data){
+                let msg = {
+                    url: tab.url,
+                    show: data.show
+                }
+                chrome.tabs.sendMessage(tab.id, msg)
+                console.log(tab.url)
+                console.log(data.show)
+            })
+        }
     }
 }

@@ -34,7 +34,6 @@ function gotMessage(message, sender, sendResponse){
 
     if(message.url === "https://www.youtube.com/") {
         if(message.show === true){
-            console.log("show")
             addCSS();
             toggleCSS(message)
             /*
