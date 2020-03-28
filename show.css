@@ -1,0 +1,8 @@
+/* Show everything that was hidden by hide.css */
+#items {
+    display: flex !important;
+}
+
+#ticker {
+    display: none;
+}

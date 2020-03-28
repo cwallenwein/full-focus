@@ -1,0 +1,11 @@
+/* Hide everything in the beginning */
+#items {
+    display: none !important;
+}
+
+#ticker {
+    width: 100vw;
+    height: 100vh;
+    background: white;
+
+}

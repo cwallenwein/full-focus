@@ -17,6 +17,9 @@
     "permissions": [
         "storage", "tabs"
     ],
-    "browser_action": {}
+    "browser_action": {},
+    "web_accessible_resources": [
+        "show.css"
+    ]
 
 }
