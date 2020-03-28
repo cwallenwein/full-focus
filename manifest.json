@@ -11,13 +11,12 @@
         "js": ["content.js"]
         }],
     "background": {
-        "scripts": ["background.js"]
-    },
-    "browser_action":{
-        "default_icon": "icon.png"
+        "scripts": ["background.js"],
+        "persistent": false
     },
     "permissions": [
-        "tabs"
-    ]
+        "storage", "tabs"
+    ],
+    "browser_action": {}
 
 }
