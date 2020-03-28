@@ -2,14 +2,53 @@
 
 chrome.runtime.onMessage.addListener(gotMessage);
 
+function addCSS(){
+    var url = chrome.runtime.getURL("show.css");    
+    var link = document.createElement("link");
+    link.type = "text/css";
+    link.rel = "stylesheet";
+    link.href = url;
+    link.dataset.name = "show"
+    document.head.appendChild(link)
+}
+
+function toggleCSS(message){
+    var links = document.getElementsByTagName("link");
+    var url = chrome.runtime.getURL("show.css");    
+    for(let link of links){
+        if(link.getAttribute("data-name") === "show"){
+            if(message.show === true){
+                link.href = url;
+            }else{
+                link.href = undefined
+            }
+        }
+    }
+}
 
 function gotMessage(message, sender, sendResponse){
+
+    
 
     console.log(message)
 
     if(message.url === "https://www.youtube.com/") {
-        if(message.txt === "hide"){
+        if(message.show === true){
+            console.log("show")
+            addCSS();
+            toggleCSS(message)
+            /*
+            // remove blank screen again
+            document.getElementById("blank").style.zIndex = "-10";
+            document.getElementById("form").style.zIndex = "-10";
             
+            // enable scrolling again
+            document.body.style.overflowY = "auto"
+
+            document.getElementById*/
+        }else{
+            toggleCSS(message)
+            /*          
             // create blank screen
             var blank = document.createElement("div");
             blank.classList.add("overlay");
@@ -53,19 +92,9 @@ function gotMessage(message, sender, sendResponse){
 
             // disable scrolling
             document.body.style.overflowY = "hidden"
+            */
 
-        }else{
-
-            // remove blank screen again
-            document.getElementById("blank").style.zIndex = "-10";
-            document.getElementById("form").style.zIndex = "-10";
-            
-
-
-            // enable scrolling again
-            document.body.style.overflowY = "auto"
-
-            document.getElementById
+           
 
         }    
 

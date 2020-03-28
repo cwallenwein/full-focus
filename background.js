@@ -4,7 +4,7 @@ var pages = new Array("https://www.youtube.com/")
 
 console.log('background running');
 
-// show everything right after the extension was installed
+// when the extension is installed, show everything
 chrome.runtime.onInstalled.addListener(function(){
     chrome.storage.sync.set({
         show: true, function(){
@@ -21,17 +21,24 @@ function toggle(){
         status = !status
         //update icon
         chrome.browserAction.setIcon({path: status + ".png"});
-        //update to chrome
+        //save update to chrome
         chrome.storage.sync.set({
             show: status, function(){
                 console.log(status)
             }
         });
+        //update current page if it is in pages
+
     });
 };
 
 // toggle when clicking on the extension icon
-chrome.browserAction.onClicked.addListener(toggle);
+chrome.browserAction.onClicked.addListener(
+    function(tab){
+        toggle()
+        sendInfo(tab)
+    });
+
 toggle();
 
 // send message to content-script whether elements have to be hidden or not
@@ -41,10 +48,16 @@ toggle();
 // recommendations for a short period of time as long as the website hasn't loaded completely
 //chrome.webNavigation.onHistoryStateUpdated.addListener(sendInfo)
 //chrome.webNavigation.onHistoryStateUpdated.addListener(sendInfo)
-chrome.tabs.onUpdated.addListener(sendInfo)
+chrome.tabs.onUpdated.addListener(
+    function(tabId, changeInfo, tab){
+        if(changeInfo.status === 'complete'){
+            sendInfo(tab)
+        }
+        
+    })
 
-function sendInfo(tabId, changeInfo, tab){
-    if(changeInfo.status === 'complete' && pages.indexOf(tab.url) != -1){
+function sendInfo(tab){
+    if(pages.indexOf(tab.url) != -1){
         chrome.storage.sync.get('show', function(data){
             let msg = {
                 url: tab.url,

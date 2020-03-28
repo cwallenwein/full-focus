@@ -4,7 +4,7 @@
     "description": "---",
     "version": "1.0",
     "content_scripts":[{
-        "css": ["style.css"],
+        "css": ["style.css", "hide.css"],
         "matches": [
             "https://www.youtube.com/*"
         ],
