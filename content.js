@@ -27,9 +27,6 @@ function toggleCSS(message){
 }
 
 function gotMessage(message, sender, sendResponse){
-
-    
-
     console.log(message)
 
     if(message.url === "https://www.youtube.com/") {
@@ -98,21 +95,18 @@ function gotMessage(message, sender, sendResponse){
         }    
 
     }else if(new RegExp("https:\/\/www\.youtube\.com\/watch.*").test(message.url)){
-        if(message.txt === "hide"){
+        addCSS();
+        if(message.show){
+            document.getElementById("playlist").style.display = "flex";
+            document.getElementById("related").style.display = "block";
+            document.getElementById("comments").style.display = "block";
+            document.getElementById("merch-shelf").style.display = "block";            
+        }else{
             document.getElementById("playlist").style.display = "none";
             document.getElementById("related").style.display = "none";
             document.getElementById("comments").style.display = "none";
             document.getElementById("merch-shelf").style.display = "none";
-            
-        }else{
-            document.getElementById("playlist").style.display = "flex";
-            document.getElementById("related").style.display = "block";
-            document.getElementById("comments").style.display = "block";
-            document.getElementById("merch-shelf").style.display = "block";
         }
-        
     }
-
-    
 }
 

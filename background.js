@@ -1,7 +1,5 @@
 'use strict';
 
-var pages = new Array("https://www.youtube.com/")
-
 console.log('background running');
 
 // when the extension is installed, show everything
@@ -21,7 +19,7 @@ function toggleStatus(tab){
         //save update to chrome
         chrome.storage.sync.set({show: status});
         //update current page if it is in pages
-        if(pages.indexOf(tab.url) != -1){
+        if(checkURL(tab.url)){
             let msg = {
                 url: tab.url,
                 show: status
@@ -44,7 +42,7 @@ chrome.tabs.onUpdated.addListener(sendStatus)
 
 function sendStatus(tabId, changeInfo, tab){
     if(changeInfo.status === 'complete'){
-        if(pages.indexOf(tab.url) != -1){
+        if(checkURL(tab.url)){
             chrome.storage.sync.get('show', function(data){
                 let msg = {
                     url: tab.url,
@@ -54,4 +52,11 @@ function sendStatus(tabId, changeInfo, tab){
             })
         }
     }
+}
+
+var pages = new Array("https://www.youtube.com/")
+
+function checkURL(url){
+    //return (pages.indexOf(url) != -1)
+    return url.startsWith(pages[0])
 }
