@@ -1,18 +1,37 @@
+'use strict';
+
 console.log('background running');
 
-chrome.browserAction.onClicked.addListener(buttonClicked)
-
-let status = "show"
+chrome.runtime.onInstalled.addListener(function(){
+    chrome.storage.sync.set({
+        show: true, function(){
+            console.log('Show everything on YouTube')
+        }
+    })
+})
 
 function toggle(){
-    if (status === "show"){
-        status = "hide"
-    }else{
-        status = "show"
-    }
-}
+    chrome.storage.sync.get('show', function(data){
+        var status = data.show;
+        //update icon
+        chrome.browserAction.setIcon({path: status + ".png"});
+        // toggle status
+        status = !status
+        //update to chrome
+        chrome.storage.sync.set({
+            show: status, function(){
+                console.log(status)
+            }
+        });
+    });
+};
 
-function buttonClicked(tab){
+chrome.browserAction.onClicked.addListener(toggle);
+toggle();
+
+
+
+/*function buttonClicked(tab){
     
     toggle();
 
@@ -21,4 +40,4 @@ function buttonClicked(tab){
         url: tab.url
     }
     chrome.tabs.sendMessage(tab.id, msg);
-}
+}*/
