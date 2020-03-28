@@ -1,5 +1,7 @@
 'use strict';
 
+var pages = new Array("https://www.youtube.com/")
+
 console.log('background running');
 
 // show everything right after the extension was installed
@@ -15,10 +17,10 @@ chrome.runtime.onInstalled.addListener(function(){
 function toggle(){
     chrome.storage.sync.get('show', function(data){
         var status = data.show;
-        //update icon
-        chrome.browserAction.setIcon({path: status + ".png"});
         // toggle status
         status = !status
+        //update icon
+        chrome.browserAction.setIcon({path: status + ".png"});
         //update to chrome
         chrome.storage.sync.set({
             show: status, function(){
@@ -42,7 +44,7 @@ toggle();
 chrome.tabs.onUpdated.addListener(sendInfo)
 
 function sendInfo(tabId, changeInfo, tab){
-    if(changeInfo.status === 'complete' && tab.url != "chrome://newtab/"){
+    if(changeInfo.status === 'complete' && pages.indexOf(tab.url) != -1){
         chrome.storage.sync.get('show', function(data){
             let msg = {
                 url: tab.url,
