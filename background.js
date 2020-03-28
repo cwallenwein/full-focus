@@ -19,20 +19,14 @@ function toggleStatus(tab){
         //update icon
         chrome.browserAction.setIcon({path: status + ".png"});
         //save update to chrome
-        chrome.storage.sync.set({
-            show: status, function(){
-                console.log(status)
-            }
-        });
+        chrome.storage.sync.set({show: status});
         //update current page if it is in pages
         if(pages.indexOf(tab.url) != -1){
             let msg = {
                 url: tab.url,
-                show: data.show
+                show: status
             }
             chrome.tabs.sendMessage(tab.id, msg)
-            console.log(tab.url)
-            console.log(data.show)
         }
     });
 
@@ -57,8 +51,6 @@ function sendStatus(tabId, changeInfo, tab){
                     show: data.show
                 }
                 chrome.tabs.sendMessage(tab.id, msg)
-                console.log(tab.url)
-                console.log(data.show)
             })
         }
     }
