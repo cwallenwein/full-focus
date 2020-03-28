@@ -1,6 +1,11 @@
+'use strict';
+
 chrome.runtime.onMessage.addListener(gotMessage);
 
+
 function gotMessage(message, sender, sendResponse){
+
+    console.log(message)
 
     if(message.url === "https://www.youtube.com/") {
         if(message.txt === "hide"){

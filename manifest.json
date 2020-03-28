@@ -15,7 +15,7 @@
         "persistent": false
     },
     "permissions": [
-        "storage", "tabs"
+        "storage", "tabs", "webNavigation"
     ],
     "browser_action": {},
     "web_accessible_resources": [
