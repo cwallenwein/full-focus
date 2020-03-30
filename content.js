@@ -90,9 +90,9 @@ function addSearchBar() {
     background.setAttribute("id", "ext_background")
 
     // create form
-    var form = document.createElement("form")
+    var form = document.createElement("ext_form")
     form.classList.add("ext_overlay");
-    form.setAttribute("id", "form")
+    form.setAttribute("id", "ext_form")
 
     // form.action = "#"
     //form.onsubmit = function(){
