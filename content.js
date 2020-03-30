@@ -142,7 +142,7 @@ function showSearchBar() {
 function hideSearchBar() {
     console.log("hideSearchBar")
     // remove background and form again
-    document.getElementById("ext_blankbackground").style.zIndex = "-10";
+    document.getElementById("ext_background").style.zIndex = "-10";
     document.getElementById("ext_form").style.zIndex = "-10";
 
     // enable scrolling again
