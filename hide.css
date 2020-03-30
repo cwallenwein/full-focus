@@ -1,6 +1,6 @@
 /* Hide everything in the beginning */
 
-#ticker {
+#ext_ticker {
     width: 100vw;
     height: 100vh;
     background: white;

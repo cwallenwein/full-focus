@@ -59,7 +59,7 @@ function toggleYouTubeWatch(message) {
 function addShowCSS() {
     console.log("addShowCss")
     var url = chrome.runtime.getURL("show.css");
-    var link = document.createElement("link");
+    var link = document.createElement("ext_link");
     link.type = "text/css";
     link.rel = "stylesheet";
     link.href = url;
@@ -69,7 +69,7 @@ function addShowCSS() {
 
 function toggleCSS(message) {
     console.log("toggleCSS")
-    var links = document.getElementsByTagName("link");
+    var links = document.getElementsByTagName("ext_link");
     var url = chrome.runtime.getURL("show.css");
     for (let link of links) {
         if (link.getAttribute("data-name") === "show") {
@@ -86,32 +86,32 @@ function addSearchBar() {
     console.log("addSearchBar")
     // create blank background
     var background = document.createElement("div");
-    background.classList.add("overlay");
-    background.setAttribute("id", "blankbackground")
+    background.classList.add("ext_overlay");
+    background.setAttribute("id", "ext_background")
 
     // create form
     var form = document.createElement("form")
-    form.classList.add("overlay");
+    form.classList.add("ext_overlay");
     form.setAttribute("id", "form")
 
     // form.action = "#"
     //form.onsubmit = function(){
-    // window.location.href  = "https://www.youtube.com/results?search_query=" + document.getElementById('searchBar').value
+    // window.location.href  = "https://www.youtube.com/results?search_query=" + document.getElementById('ext_searchBar').value
     //}
 
     // create input field
     var searchBar = document.createElement("input")
     searchBar.setAttribute("type", "text")
-    searchBar.classList.add("overlay");
-    searchBar.setAttribute("id", "searchBar")
+    searchBar.classList.add("ext_overlay");
+    searchBar.setAttribute("id", "ext_searchBar")
 
     // create submit button
     var submitButton = document.createElement("div")
     //submitButton.setAttribute("type", "submit")
-    submitButton.classList.add("overlay");
-    submitButton.setAttribute("id", "submitButton")
+    submitButton.classList.add("ext_overlay");
+    submitButton.setAttribute("id", "ext_submitButton")
     submitButton.onclick = function () {
-        window.location.href = "https://www.youtube.com/results?search_query=" + document.getElementById('searchBar').value
+        window.location.href = "https://www.youtube.com/results?search_query=" + document.getElementById('ext_searchBar').value
     }
     submitButton.append(document.createTextNode("Go"))
 
@@ -127,13 +127,13 @@ function addSearchBar() {
 function showSearchBar() {
     console.log("showSearchBar")
     // make background and form visible
-    document.getElementById("blankbackground").style.zIndex = "2500";
-    document.getElementById("form").style.zIndex = "2501"
+    document.getElementById("ext_background").style.zIndex = "2500";
+    document.getElementById("ext_form").style.zIndex = "2501"
     // disable scrolling
     document.body.style.overflowY = "hidden"
 
     // submit form on enter
-    var searchBar = document.getElementById("searchBar");
+    var searchBar = document.getElementById("ext_searchBar");
     searchBar.addEventListener("keyup", submitOnEnter)
 }
 
@@ -142,20 +142,20 @@ function showSearchBar() {
 function hideSearchBar() {
     console.log("hideSearchBar")
     // remove background and form again
-    document.getElementById("blankbackground").style.zIndex = "-10";
-    document.getElementById("form").style.zIndex = "-10";
+    document.getElementById("ext_blankbackground").style.zIndex = "-10";
+    document.getElementById("ext_form").style.zIndex = "-10";
 
     // enable scrolling again
     document.body.style.overflowY = "auto"
 
     // disable submit form on enter
-    var searchBar = document.getElementById("searchBar");
+    var searchBar = document.getElementById("ext_searchBar");
     searchBar.removeEventListener("keyup", submitOnEnter)
 }
 
 function submitOnEnter(){
     if (event.keyCode === 13) {
         event.preventDefault()
-        document.getElementById("submitButton").click()
+        document.getElementById("ext_submitButton").click()
     }
 }
