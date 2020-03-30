@@ -9,6 +9,8 @@ function gotMessage(message, sender, sendResponse) {
         toggleYouTubeHomepage(message)
     } else if (new RegExp("https:\/\/www\.youtube\.com\/watch.*").test(message.url)) {
         toggleYouTubeWatch(message)
+    } else if(message.url.startsWith("https://www.youtube.com/")){
+        addShowCSS();
     }
 }
 
