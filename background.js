@@ -22,13 +22,12 @@ function toggleStatus(tab){
         if(checkURL(tab.url)){
             let msg = {
                 url: tab.url,
-                show: status
+                show: status,
+                firstTime: false //this page was open before, the toggle button was just pressed
             }
             chrome.tabs.sendMessage(tab.id, msg)
         }
     });
-
-
 }
 
 // send message to content-script whether elements have to be hidden or not
@@ -46,7 +45,8 @@ function sendStatus(tabId, changeInfo, tab){
             chrome.storage.sync.get('show', function(data){
                 let msg = {
                     url: tab.url,
-                    show: data.show
+                    show: data.show,
+                    firstTime: true //this page was just opended for the first time
                 }
                 chrome.tabs.sendMessage(tab.id, msg)
             })
@@ -58,5 +58,7 @@ var pages = new Array("https://www.youtube.com/")
 
 function checkURL(url){
     //return (pages.indexOf(url) != -1)
+    //console.log("checking " + url)
+    //console.log("returning " + url.startsWith(pages[0]))
     return url.startsWith(pages[0])
 }
