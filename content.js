@@ -91,7 +91,7 @@ function addSearchBar() {
     var form = document.createElement("form")
     form.classList.add("overlay");
     form.setAttribute("id", "form")
-    
+
     // form.action = "#"
     //form.onsubmit = function(){
     // window.location.href  = "https://www.youtube.com/results?search_query=" + document.getElementById('searchBar').value
@@ -129,6 +129,10 @@ function showSearchBar() {
     document.getElementById("form").style.zIndex = "2501"
     // disable scrolling
     document.body.style.overflowY = "hidden"
+
+    // submit form on enter
+    var searchBar = document.getElementById("searchBar");
+    searchBar.addEventListener("keyup", submitOnEnter)
 }
 
 
@@ -141,4 +145,15 @@ function hideSearchBar() {
 
     // enable scrolling again
     document.body.style.overflowY = "auto"
+
+    // disable submit form on enter
+    var searchBar = document.getElementById("searchBar");
+    searchBar.removeEventListener("keyup", submitOnEnter)
+}
+
+function submitOnEnter(){
+    if (event.keyCode === 13) {
+        event.preventDefault()
+        document.getElementById("submitButton").click()
+    }
 }
