@@ -87,7 +87,7 @@ function addSearchBar() {
     // create blank background
     var background = document.createElement("div");
     background.classList.add("overlay");
-    background.setAttribute("id", "background")
+    background.setAttribute("id", "blankbackground")
 
     // create form
     var form = document.createElement("form")
@@ -127,7 +127,7 @@ function addSearchBar() {
 function showSearchBar() {
     console.log("showSearchBar")
     // make background and form visible
-    document.getElementById("background").style.zIndex = "2500";
+    document.getElementById("blankbackground").style.zIndex = "2500";
     document.getElementById("form").style.zIndex = "2501"
     // disable scrolling
     document.body.style.overflowY = "hidden"
@@ -142,7 +142,7 @@ function showSearchBar() {
 function hideSearchBar() {
     console.log("hideSearchBar")
     // remove background and form again
-    document.getElementById("background").style.zIndex = "-10";
+    document.getElementById("blankbackground").style.zIndex = "-10";
     document.getElementById("form").style.zIndex = "-10";
 
     // enable scrolling again
