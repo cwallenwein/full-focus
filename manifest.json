@@ -15,7 +15,7 @@
         "persistent": false
     },
     "permissions": [
-        "storage", "tabs", "webNavigation"
+        "storage", "tabs"
     ],
     "browser_action": {
         "default_icon": "true.png"

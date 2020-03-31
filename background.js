@@ -35,8 +35,6 @@ function toggleStatus(tab){
 // however this might not work because some elements are hidden from the start
 // hiding elements from the beginning has to be done, because otherwise you would see /n
 // recommendations for a short period of time as long as the website hasn't loaded completely
-//chrome.webNavigation.onHistoryStateUpdated.addListener(sendInfo)
-//chrome.webNavigation.onHistoryStateUpdated.addListener(sendInfo)
 chrome.tabs.onUpdated.addListener(sendStatus)
 
 function sendStatus(tabId, changeInfo, tab){
