@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
     "name": "FullFocus",
-    "description": "Get your focus on YouTube back when working or educating yourself",
+    "description": "Regain your focus on YouTube when working or educating yourself",
     "version": "0.1",
     "content_scripts":[{
         "css": ["style.css", "hide.css"],
