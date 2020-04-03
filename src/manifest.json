@@ -1,7 +1,7 @@
 {
     "manifest_version": 2,
-    "name": "FullFocus - Productivity & Focus",
-    "description": "Regain your focus on YouTube when working or educating yourself",
+    "name": "Full Focus - Hide Recommendations on YouTube",
+    "description": "Become productive again by hiding all distractions on YouTube",
     "version": "0.1",
     "content_scripts":[{
         "css": ["style.css", "hide.css"],
