@@ -4,7 +4,7 @@ console.log('background running');
 
 // when the extension is installed, show everything
 chrome.runtime.onInstalled.addListener(function () {
-    chrome.storage.sync.set({ show: true })
+    chrome.storage.sync.set({ active: false })
     chrome.storage.sync.set({
         settings: {
             youtube: {
@@ -32,19 +32,19 @@ chrome.runtime.onInstalled.addListener(function () {
 chrome.browserAction.onClicked.addListener(toggleStatus)
 
 function toggleStatus(tab) {
-    chrome.storage.sync.get('show', function (data) {
-        var status = data.show;
+    chrome.storage.sync.get('active', function (data) {
+        var status = data.active;
         // toggle status
         status = !status
         //update icon
         chrome.browserAction.setIcon({ path: status + ".png" });
         //save update to chrome
-        chrome.storage.sync.set({ show: status });
+        chrome.storage.sync.set({ active: status });
         //update current page if it is in pages
         if (checkURL(tab.url)) {
             let msg = {
                 url: tab.url,
-                show: status,
+                active: status,
                 firstTime: false //this page was open before, the toggle button was just pressed
             }
             chrome.tabs.sendMessage(tab.id, msg)
@@ -62,10 +62,10 @@ chrome.tabs.onUpdated.addListener(sendStatus)
 function sendStatus(tabId, changeInfo, tab) {
     if (changeInfo.status === 'complete') {
         if (checkURL(tab.url)) {
-            chrome.storage.sync.get('show', function (data) {
+            chrome.storage.sync.get('active', function (data) {
                 let msg = {
                     url: tab.url,
-                    show: data.show,
+                    active: data.active,
                     firstTime: true //this page was just opended for the first time
                 }
                 chrome.tabs.sendMessage(tab.id, msg)

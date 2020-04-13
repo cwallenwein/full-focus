@@ -18,15 +18,15 @@ chrome.storage.sync.get('settings', function (response) {
 })
 
 // code for general extension
-chrome.storage.sync.get('show', function (response) {
+chrome.storage.sync.get('active', function (response) {
     var current = document.getElementById("extension")
 
     // check or uncheck checkboxes based on settings
-    current.checked = response.show
+    current.checked = response.active
 
     // add EventListener that updates the settings
     current.addEventListener("click", function () {
-        response.show = !response.show
-        chrome.storage.sync.set({ settings: response.show })
+        response.active = !response.active
+        chrome.storage.sync.set({ active: response.active })
     })
 })
