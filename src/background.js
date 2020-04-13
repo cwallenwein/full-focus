@@ -8,9 +8,9 @@ chrome.runtime.onInstalled.addListener(function () {
     chrome.storage.sync.set({
         settings_youtube: {
             "hideHomepage": false,
-            "hideComments": false,
+            "hideComments": true,
             "hidePlaylists": false,
-            "hideRecommendations": false
+            "hideRecommendations": true
         }
     })
 })
@@ -74,7 +74,7 @@ function checkURL(url) {
 chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
     if(request.method == "getSettings"){
         chrome.storage.sync.get('settings_youtube', function(data){
-            sendResponse({ settings_youtube: data });          
+            sendResponse(data);          
         })
         return true;
     }else{
