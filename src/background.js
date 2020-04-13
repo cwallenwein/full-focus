@@ -3,24 +3,31 @@
 console.log('background running');
 
 // when the extension is installed, show everything
-chrome.runtime.onInstalled.addListener(function(){
-    chrome.storage.sync.set({show: true})
-    // TODO also set standard settings for all pages
+chrome.runtime.onInstalled.addListener(function () {
+    chrome.storage.sync.set({ show: true })
+    chrome.storage.sync.set({
+        settings_youtube: {
+            "hideHomepage": false,
+            "hideComments": false,
+            "hidePlaylists": false,
+            "hideRecommendations": false
+        }
+    })
 })
 
 chrome.browserAction.onClicked.addListener(toggleStatus)
 
-function toggleStatus(tab){
-    chrome.storage.sync.get('show', function(data){
+function toggleStatus(tab) {
+    chrome.storage.sync.get('show', function (data) {
         var status = data.show;
         // toggle status
         status = !status
         //update icon
-        chrome.browserAction.setIcon({path: status + ".png"});
+        chrome.browserAction.setIcon({ path: status + ".png" });
         //save update to chrome
-        chrome.storage.sync.set({show: status});
+        chrome.storage.sync.set({ show: status });
         //update current page if it is in pages
-        if(checkURL(tab.url)){
+        if (checkURL(tab.url)) {
             let msg = {
                 url: tab.url,
                 show: status,
@@ -38,10 +45,10 @@ function toggleStatus(tab){
 // recommendations for a short period of time as long as the website hasn't loaded completely
 chrome.tabs.onUpdated.addListener(sendStatus)
 
-function sendStatus(tabId, changeInfo, tab){
-    if(changeInfo.status === 'complete'){
-        if(checkURL(tab.url)){
-            chrome.storage.sync.get('show', function(data){
+function sendStatus(tabId, changeInfo, tab) {
+    if (changeInfo.status === 'complete') {
+        if (checkURL(tab.url)) {
+            chrome.storage.sync.get('show', function (data) {
                 let msg = {
                     url: tab.url,
                     show: data.show,
@@ -55,7 +62,7 @@ function sendStatus(tabId, changeInfo, tab){
 
 var pages = new Array("https://www.youtube.com/")
 
-function checkURL(url){
+function checkURL(url) {
     //return (pages.indexOf(url) != -1)
     //console.log("checking " + url)
     //console.log("returning " + url.startsWith(pages[0]))
@@ -63,5 +70,19 @@ function checkURL(url){
 }
 
 
-// function to send settings for given page
+// function to send settings for given page on request
+chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
+    if(request.method == "getSettings"){
+        chrome.storage.sync.get('settings_youtube', function(data){
+            sendResponse({ settings_youtube: data });          
+        })
+        return true;
+    }else{
+        return false;
+    }
+    
+});
+
+//chrome.storage.sync.get('settings_youtube', function(data){console.log(data)})
 // function to update settings for given pagen after a request was sent from popup.js
+
