@@ -3,16 +3,23 @@
 chrome.runtime.onMessage.addListener(gotMessage);
 
 function gotMessage(message, sender, sendResponse) {
+    
     console.log(message)
 
-    if (message.url === "https://www.youtube.com/") {
-        toggleYouTubeHomepage(message)
-    } else if (new RegExp("https:\/\/www\.youtube\.com\/watch.*").test(message.url)) {
-        toggleYouTubeWatch(message)
-    } else if(message.url.startsWith("https://www.youtube.com/")){
-        addShowCSS();
-    }
+    chrome.storage.sync.get('settings', function(response){
+
+        var settings = response.settings.youtube
+
+        if (message.url === "https://www.youtube.com/") {
+            toggleYouTubeHomepage(message, settings)
+        } else if (new RegExp("https:\/\/www\.youtube\.com\/watch.*").test(message.url)) {
+            toggleYouTubeWatch(message, settings)
+        } else if(message.url.startsWith("https://www.youtube.com/")){
+            addShowCSS();
+        }
+    })
 }
+
 
 function toggleYouTubeHomepage(message) {
     console.log("YTHomepage")
@@ -32,7 +39,7 @@ function toggleYouTubeHomepage(message) {
 }
 
 
-function toggleYouTubeWatch(message) {
+function toggleYouTubeWatch(message, settings) {
     console.log("YTWatch")
     // 2 options:
     // 1: only display white screen for YT homepage and not for YT watch
@@ -45,12 +52,12 @@ function toggleYouTubeWatch(message) {
         document.getElementById("playlist").style.display = "flex";
         document.getElementById("related").style.display = "block";
         document.getElementById("comments").style.display = "block";
-        document.getElementById("merch-shelf").style.display = "block";
+        //document.getElementById("merch-shelf").style.display = "block";
     } else {
         document.getElementById("playlist").style.display = "none";
         document.getElementById("related").style.display = "none";
         document.getElementById("comments").style.display = "none";
-        document.getElementById("merch-shelf").style.display = "none";
+        //document.getElementById("merch-shelf").style.display = "none";
     }
 }
 
