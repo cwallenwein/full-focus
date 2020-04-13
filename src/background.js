@@ -6,11 +6,13 @@ console.log('background running');
 chrome.runtime.onInstalled.addListener(function () {
     chrome.storage.sync.set({ show: true })
     chrome.storage.sync.set({
-        settings_youtube: {
-            "hideHomepage": false,
-            "hideComments": true,
-            "hidePlaylists": false,
-            "hideRecommendations": true
+        settings: {
+            youtube: {
+                hideHomepage: false,
+                hideComments: true,
+                hidePlaylists: false,
+                hideRecommendations: true
+            }
         }
     })
 })
