@@ -20,6 +20,45 @@ function gotMessage(message, sender, sendResponse) {
     })
 }
 
+var hiding = {
+    youtube:{
+        homepage:{
+            function(hide){
+                //
+            }
+        },
+        comments: {
+            function(hide){
+                current = document.getElementById("comments")
+                if(hide){
+                    current.style.display = "none";
+                }else{
+                    current.style.display = "block";
+                }
+            }
+        },
+        playlists: {
+            function(hide){
+                current = document.getElementById("playlist")
+                if(hide){
+                    current.style.display = "none";
+                }else{
+                    current.style.display = "flex";
+                } 
+            }
+        },
+        recommendations: {
+            function(hide){
+                current = document.getElementById("related")
+                if(hide){
+                    current.style.display = "none";
+                }else{
+                    current.style.display = "block";
+                }
+            }
+        },
+    }
+}
 
 function toggleYouTubeHomepage(message) {
     console.log("YTHomepage")
