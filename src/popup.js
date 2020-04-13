@@ -5,11 +5,11 @@ chrome.storage.sync.get('settings', function(response){
         var current = document.getElementById(key)
         
         // check or uncheck checkboxes based on settings
-        current.checked = response.settings.youtube[key]
+        current.checked = response.settings.youtube[key].hide
 
         // add EventListener that updates the settings
         current.addEventListener("click", function(){
-            response.settings.youtube[key] = !response.settings.youtube[key]
+            response.settings.youtube[key].hide = !response.settings.youtube[key].hide
             chrome.storage.sync.set({settings: response.settings})
         })
     }

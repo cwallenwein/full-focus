@@ -8,10 +8,22 @@ chrome.runtime.onInstalled.addListener(function () {
     chrome.storage.sync.set({
         settings: {
             youtube: {
-                hideHomepage: false,
-                hideComments: true,
-                hidePlaylists: false,
-                hideRecommendations: true
+                homepage:{
+                    hide: false,
+                    id: undefined
+                },
+                comments: {
+                    hide: false,
+                    id: "comments"
+                },
+                playlists: {
+                    hide: false,
+                    id: "playlist"
+                },
+                recommendations: {
+                    hide: false,
+                    id: "related"
+                },
             }
         }
     })
