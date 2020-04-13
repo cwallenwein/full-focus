@@ -5,6 +5,7 @@ console.log('background running');
 // when the extension is installed, show everything
 chrome.runtime.onInstalled.addListener(function(){
     chrome.storage.sync.set({show: true})
+    // TODO also set standard settings for all pages
 })
 
 chrome.browserAction.onClicked.addListener(toggleStatus)
@@ -60,3 +61,7 @@ function checkURL(url){
     //console.log("returning " + url.startsWith(pages[0]))
     return url.startsWith(pages[0])
 }
+
+
+// function to send settings for given page
+// function to update settings for given pagen after a request was sent from popup.js
