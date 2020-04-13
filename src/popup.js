@@ -1,25 +1,16 @@
 // request all settings from storage when popup is opened
+// and update settings when necessary
 chrome.storage.sync.get('settings', function(response){
-    console.log(response)
-    var settings = response.settings.youtube
-    for(var key in settings){
-        document.getElementById(key).checked = settings[key]
+    for(let key in response.settings.youtube){
+        var current = document.getElementById(key)
+        
+        // check or uncheck checkboxes based on settings
+        current.checked = response.settings.youtube[key]
+
+        // add EventListener that updates the settings
+        current.addEventListener("click", function(){
+            response.settings.youtube[key] = !response.settings.youtube[key]
+            chrome.storage.sync.set({settings: response.settings})
+        })
     }
 })
-
-
-/*document.addEventListener("DOMContentLoaded", function () {
-
-    var form = document.forms["form"];
-
-    var actions = new Array()
-
-    form.querySelectorAll("input").forEach(
-        checkbox => {
-            checkbox.addEventListener('click', event => {
-                checkbox.
-            })
-        }
-    )
-}, false);
-*/
