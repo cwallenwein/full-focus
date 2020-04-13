@@ -68,21 +68,3 @@ function checkURL(url) {
     //console.log("returning " + url.startsWith(pages[0]))
     return url.startsWith(pages[0])
 }
-
-
-// function to send settings for given page on request
-chrome.runtime.onMessage.addListener(function (request, sender, sendResponse) {
-    if(request.method == "getSettings"){
-        chrome.storage.sync.get('settings_youtube', function(data){
-            sendResponse(data);          
-        })
-        return true;
-    }else{
-        return false;
-    }
-    
-});
-
-//chrome.storage.sync.get('settings_youtube', function(data){console.log(data)})
-// function to update settings for given pagen after a request was sent from popup.js
-

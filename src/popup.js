@@ -1,18 +1,11 @@
-// here we need a receiver, when the popup is opened
-// and a sender, when the popup is updated
+// request all settings from storage when popup is opened
+chrome.storage.sync.get('settings_youtube', function(response){
+    document.getElementById("homepage").checked = response.settings_youtube.hideHomepage;
+    document.getElementById("comments").checked = response.settings_youtube.hideComments;
+    document.getElementById("playlists").checked = response.settings_youtube.hidePlaylists;
+    document.getElementById("recommendations").checked = response.settings_youtube.hideRecommendations;
+})
 
-// sends a message to background.js requesting all settings whenever the popup is opened
-chrome.runtime.sendMessage(
-    {method: "getSettings"},
-    function(response){
-        var response = response
-        console.log(response)
-        document.getElementById("homepage").checked = response.settings_youtube.hideHomepage;
-        document.getElementById("comments").checked = response.settings_youtube.hideComments;
-        document.getElementById("playlists").checked = response.settings_youtube.hidePlaylists;
-        document.getElementById("recommendations").checked = response.settings_youtube.hideRecommendations;
-    }
-)
 
 /*document.addEventListener("DOMContentLoaded", function () {
 
