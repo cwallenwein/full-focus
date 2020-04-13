@@ -14,6 +14,9 @@ function gotMessage(message, sender, sendResponse) {
             toggleYouTubeHomepage(message, settings)
         } else if (new RegExp("https:\/\/www\.youtube\.com\/watch.*").test(message.url)) {
             toggleYouTubeWatch(message, settings)
+            //hiding.youtube.comments(settings.youtube.comments.hide)
+            //hiding.youtube.playlists(settings.youtube.playlists.hide)
+            //hiding.youtube.recommendations(settings.youtube.recommendations.hide)
         } else if(message.url.startsWith("https://www.youtube.com/")){
             addShowCSS();
         }
