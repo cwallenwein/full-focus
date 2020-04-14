@@ -26,37 +26,48 @@ function gotMessage(message, sender, sendResponse) {
 var hiding = {
     youtube:{
         homepage:{
-            function(hide){
-                //
+            hide: {
+                true: function(){
+                    //
+                },
+                false: function(){
+                    //
+                }
             }
         },
         comments: {
-            function(hide){
-                current = document.getElementById("comments")
-                if(hide){
+            hide: {
+                true: function(){
+                    current = document.getElementById("comments")
                     current.style.display = "none";
-                }else{
+                },
+                false: function(){
+                    current = document.getElementById("comments")
                     current.style.display = "block";
                 }
             }
         },
         playlists: {
-            function(hide){
-                current = document.getElementById("playlist")
-                if(hide){
-                    current.style.display = "none";
-                }else{
-                    current.style.display = "flex";
-                } 
+            hide: {
+                true:function(){
+                    current = document.getElementById("playlist")
+                    current.style.display = "none"
+                },
+                false: function(){
+                    current = document.getElementById("playlist")
+                    current.style.display = "flex"
+                }
             }
         },
         recommendations: {
-            function(hide){
-                current = document.getElementById("related")
-                if(hide){
-                    current.style.display = "none";
-                }else{
-                    current.style.display = "block";
+            hide: {
+                true:function(){
+                    current = document.getElementById("related")
+                    current.style.display = "none"
+                },
+                false: function(){
+                    current = document.getElementById("related")
+                    current.style.display = "block"
                 }
             }
         },
