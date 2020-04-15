@@ -43,6 +43,7 @@ function toggleStatus(tab) {
         //update current page if it is in pages
         if (checkURL(tab.url)) {
             let msg = {
+                type: false,
                 url: tab.url,
                 active: status,
                 firstTime: false //this page was open before, the toggle button was just pressed
@@ -64,6 +65,7 @@ function sendStatus(tabId, changeInfo, tab) {
         if (checkURL(tab.url)) {
             chrome.storage.sync.get('active', function (data) {
                 let msg = {
+                    type: false,
                     url: tab.url,
                     active: data.active,
                     firstTime: true //this page was just opended for the first time

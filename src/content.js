@@ -1,72 +1,117 @@
 'use strict';
 
-chrome.runtime.onMessage.addListener(gotMessage);
+// TODO dictionary that stores all the elements that can be hidden for each url and sub-url + regex to detect it
 
-function gotMessage(message, sender, sendResponse) {
-    
+chrome.runtime.onMessage.addListener(handleMessage);
+
+function handleMessage(message, sender, sendResponse) {
     console.log(message)
 
-    chrome.storage.sync.get('settings', function(response){
+    switch (message.type) {
+        case "hideAll":
+            hideAll();
+            break;
+        case "showAll":
+            showAll()
+            break;
+        case "hideOne":
+            //hideOne(param);
+            break;
+        case "showOne":
+            //showOne(param);
+            break;
+        default:
+            console.log("I don't know this type of message")
+
+    }
+
+    /*chrome.storage.sync.get('settings', function (response) {
 
         var settings = response.settings.youtube
 
-        if (message.url === "https://www.youtube.com/") {
+        if (location.href === "https://www.youtube.com/") {
             toggleYouTubeHomepage(message, settings)
-        } else if (new RegExp("https:\/\/www\.youtube\.com\/watch.*").test(message.url)) {
+        } else if (new RegExp("https:\/\/www\.youtube\.com\/watch.*").test(location.href)) {
             toggleYouTubeWatch(message, settings)
             //hiding.youtube.comments(settings.youtube.comments.hide)
             //hiding.youtube.playlists(settings.youtube.playlists.hide)
             //hiding.youtube.recommendations(settings.youtube.recommendations.hide)
-        } else if(message.url.startsWith("https://www.youtube.com/")){
+        } else if (location.href.startsWith("https://www.youtube.com/")) {
             addShowCSS();
         }
+    })*/
+}
+
+
+function showAll(){
+    // TODO make this universal for all elements possible
+    hiding.youtube.comments.hide.false()
+    hiding.youtube.playlists.hide.false()
+    hiding.youtube.recommendations.hide.false()
+}
+
+function hideAll(){
+    // TODO make this universal for all elements possible
+    chrome.storage.sync.get('settings', function (response) {
+        hiding.youtube.comments.hide[response.settings.youtube["comments"].hide]()
+        hiding.youtube.playlists.hide[response.settings.youtube["playlists"].hide]()
+        hiding.youtube.recommendations.hide[response.settings.youtube["recommendations"].hide]()
     })
 }
 
-var hiding = {
-    youtube:{
-        homepage:{
+function hideOne(key){
+    // TODO Code this
+}
+
+function showOne(key){
+    // TODO Code this
+
+}
+
+const hiding = {
+    youtube: {
+        homepage: {
             hide: {
-                true: function(){
+                true: function () {
                     //
                 },
-                false: function(){
+                false: function () {
                     //
                 }
             }
         },
         comments: {
             hide: {
-                true: function(){
-                    current = document.getElementById("comments")
+                true: function () {
+                    let current = document.getElementById("comments")
                     current.style.display = "none";
                 },
-                false: function(){
-                    current = document.getElementById("comments")
+                false: function () {
+                    let current = document.getElementById("comments")
                     current.style.display = "block";
                 }
             }
         },
         playlists: {
             hide: {
-                true:function(){
-                    current = document.getElementById("playlist")
+                true: function () {
+                    let current = document.getElementById("playlist")
                     current.style.display = "none"
                 },
-                false: function(){
-                    current = document.getElementById("playlist")
+                false: function () {
+                    let current = document.getElementById("playlist")
                     current.style.display = "flex"
                 }
             }
         },
         recommendations: {
             hide: {
-                true:function(){
-                    current = document.getElementById("related")
+                true: function () {
+                    let current = document.getElementById("related")
                     current.style.display = "none"
                 },
-                false: function(){
-                    current = document.getElementById("related")
+                false: function () {
+                    let current = document.getElementById("related")
                     current.style.display = "block"
                 }
             }
@@ -213,7 +258,7 @@ function hideSearchBar() {
     searchBar.removeEventListener("keyup", submitOnEnter)
 }
 
-function submitOnEnter(){
+function submitOnEnter() {
     if (event.keyCode === 13) {
         event.preventDefault()
         document.getElementById("ext_submitButton").click()
