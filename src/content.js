@@ -15,10 +15,10 @@ function handleMessage(message, sender, sendResponse) {
             showAll()
             break;
         case "hideOne":
-            //hideOne(param);
+            hideOne(message.element);
             break;
         case "showOne":
-            //showOne(param);
+            showOne(message.element);
             break;
         default:
             console.log("I don't know this type of message")
@@ -60,13 +60,19 @@ function hideAll() {
     })
 }
 
-function hideOne(key) {
-    // TODO Code this
+function showOne(key) {
+    // TODO make this as universal as possible
+    hiding.youtube.pages.watch.elements[key].hide.false()
 }
 
-function showOne(key) {
-    // TODO Code this
-
+function hideOne(key) {
+    // TODO make this as universal as possible
+    chrome.storage.sync.get('active', function(response){
+        if(response.active){
+            hiding.youtube.pages.watch.elements[key].hide.true()
+        }
+    })
+    
 }
 
 const hiding = {
