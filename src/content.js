@@ -43,81 +43,103 @@ function handleMessage(message, sender, sendResponse) {
 }
 
 
-function showAll(){
-    // TODO make this universal for all elements possible
-    hiding.youtube.comments.hide.false()
-    hiding.youtube.playlists.hide.false()
-    hiding.youtube.recommendations.hide.false()
+function showAll() {
+    // TODO make this as universal as possible
+    for (let elem in hiding.youtube.pages.watch.elements) {
+        hiding.youtube.pages.watch.elements[elem].hide.false()
+    }
 }
 
-function hideAll(){
-    // TODO make this universal for all elements possible
+function hideAll() {
+    // TODO make this as universal as possible
     chrome.storage.sync.get('settings', function (response) {
-        hiding.youtube.comments.hide[response.settings.youtube["comments"].hide]()
-        hiding.youtube.playlists.hide[response.settings.youtube["playlists"].hide]()
-        hiding.youtube.recommendations.hide[response.settings.youtube["recommendations"].hide]()
+        for (let elem in hiding.youtube.pages.watch.elements) {
+            let setting = response.settings.youtube[elem].hide
+            hiding.youtube.pages.watch.elements[elem].hide[setting]()
+        }
     })
 }
 
-function hideOne(key){
+function hideOne(key) {
     // TODO Code this
 }
 
-function showOne(key){
+function showOne(key) {
     // TODO Code this
 
 }
 
 const hiding = {
     youtube: {
-        homepage: {
-            hide: {
-                true: function () {
-                    //
-                },
-                false: function () {
-                    //
-                }
-            }
+        check: function (url) {
+            return url.startsWith("https://www.youtube.com/")
         },
-        comments: {
-            hide: {
-                true: function () {
-                    let current = document.getElementById("comments")
-                    current.style.display = "none";
+        pages: {
+            homepage: {
+                check: function (url) {
+                    return (url == "https://www.youtube.com/") || (url.startsWith("https://www.youtube.com/#"))
                 },
-                false: function () {
-                    let current = document.getElementById("comments")
-                    current.style.display = "block";
+                elements: {
+                    all: {
+                        hide: {
+                            true: function () {
+                                //
+                            },
+                            false: function () {
+                                //
+                            }
+                        }
+                    }
                 }
-            }
-        },
-        playlists: {
-            hide: {
-                true: function () {
-                    let current = document.getElementById("playlist")
-                    current.style.display = "none"
+            },
+            watch: {
+                check: function (url) {
+                    return url.startsWith("https://www.youtube.com/watch")
                 },
-                false: function () {
-                    let current = document.getElementById("playlist")
-                    current.style.display = "flex"
+                elements: {
+                    comments: {
+                        hide: {
+                            true: function () {
+                                let current = document.getElementById("comments")
+                                current.style.display = "none";
+                            },
+                            false: function () {
+                                let current = document.getElementById("comments")
+                                current.style.display = "block";
+                            }
+                        }
+                    },
+                    playlists: {
+                        hide: {
+                            true: function () {
+                                let current = document.getElementById("playlist")
+                                current.style.display = "none"
+                            },
+                            false: function () {
+                                let current = document.getElementById("playlist")
+                                current.style.display = "flex"
+                            }
+                        }
+                    },
+                    recommendations: {
+                        hide: {
+                            true: function () {
+                                let current = document.getElementById("related")
+                                current.style.display = "none"
+                            },
+                            false: function () {
+                                let current = document.getElementById("related")
+                                current.style.display = "block"
+                            }
+                        }
+                    },
                 }
-            }
-        },
-        recommendations: {
-            hide: {
-                true: function () {
-                    let current = document.getElementById("related")
-                    current.style.display = "none"
-                },
-                false: function () {
-                    let current = document.getElementById("related")
-                    current.style.display = "block"
-                }
-            }
-        },
+            },
+        }
     }
 }
+
+
 
 function toggleYouTubeHomepage(message) {
     console.log("YTHomepage")
@@ -264,3 +286,54 @@ function submitOnEnter() {
         document.getElementById("ext_submitButton").click()
     }
 }
+
+/*const hiding = {
+    youtube: {
+        homepage: {
+            hide: {
+                true: function () {
+                    //
+                },
+                false: function () {
+                    //
+                }
+            }
+        },
+        comments: {
+            hide: {
+                true: function () {
+                    let current = document.getElementById("comments")
+                    current.style.display = "none";
+                },
+                false: function () {
+                    let current = document.getElementById("comments")
+                    current.style.display = "block";
+                }
+            }
+        },
+        playlists: {
+            hide: {
+                true: function () {
+                    let current = document.getElementById("playlist")
+                    current.style.display = "none"
+                },
+                false: function () {
+                    let current = document.getElementById("playlist")
+                    current.style.display = "flex"
+                }
+            }
+        },
+        recommendations: {
+            hide: {
+                true: function () {
+                    let current = document.getElementById("related")
+                    current.style.display = "none"
+                },
+                false: function () {
+                    let current = document.getElementById("related")
+                    current.style.display = "block"
+                }
+            }
+        },
+    }
+}*/
