@@ -24,6 +24,10 @@ chrome.runtime.onInstalled.addListener(function () {
                     hide: false,
                     id: "related"
                 },
+                merch: {
+                    hide: false,
+                    id: "merch"
+                },
             }
         }
     })

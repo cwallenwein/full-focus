@@ -139,6 +139,18 @@ const hiding = {
                             }
                         }
                     },
+                    merch: {
+                        hide: {
+                            true: function(){
+                                let current = document.getElementById("merch-shelf")
+                                current.style.display = "none"
+                            },
+                            false: function(){
+                                let current = document.getElementById("merch-shelf")
+                                current.style.display = "block"
+                            }
+                        }
+                    }
                 }
             },
         }
@@ -163,31 +175,6 @@ function toggleYouTubeHomepage(message) {
     // add show.css directly after everything is loaded
     if (message.firstTime) { addShowCSS(); }
 }
-
-
-function toggleYouTubeWatch(message, settings) {
-    console.log("YTWatch")
-    // 2 options:
-    // 1: only display white screen for YT homepage and not for YT watch
-    // 2: add the line below
-    if (message.firstTime) { addShowCSS(); }
-    // the first recommended video is visible for a brief second before it is hidden
-    // maybe this can be fixed easily, no priority though
-
-    if (message.show) {
-        document.getElementById("playlist").style.display = "flex";
-        document.getElementById("related").style.display = "block";
-        document.getElementById("comments").style.display = "block";
-        //document.getElementById("merch-shelf").style.display = "block";
-    } else {
-        document.getElementById("playlist").style.display = "none";
-        document.getElementById("related").style.display = "none";
-        document.getElementById("comments").style.display = "none";
-        //document.getElementById("merch-shelf").style.display = "none";
-    }
-}
-
-
 
 function addShowCSS() {
     console.log("addShowCss")
