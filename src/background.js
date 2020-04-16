@@ -10,7 +10,7 @@ chrome.runtime.onInstalled.addListener(function () {
             youtube: {
                 homepage: {
                     hide: false,
-                    id: undefined
+                    id: "homepage"
                 },
                 comments: {
                     hide: false,

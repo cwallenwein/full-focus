@@ -1,13 +1,13 @@
 'use strict';
 
-// TODO dictionary that stores all the elements that can be hidden for each url and sub-url + regex to detect it
+// TODO fix search bar showing when user goes on yt/watch, clicks on yt logo and goes back one page
 
 chrome.runtime.onMessage.addListener(handleMessage);
 
 function handleMessage(message, sender, sendResponse) {
     console.log(message)
 
-    getLocation()
+    handleFirstTime(message)
 
     switch (message.type) {
         case "hideAll":
@@ -40,18 +40,28 @@ function handleMessage(message, sender, sendResponse) {
 }
 
 // check which url and which page the user is on
-function getLocation(){
-    for(var domain in hiding){
-        if(hiding[domain].check(location.href)){
+function getLocation() {
+    for (var domain in hiding) {
+        if (hiding[domain].check(location.href)) {
             break
         }
     }
-    for(var page in hiding[domain].pages){
-        if(hiding[domain].pages[page].check(location.href)){
+    for (var page in hiding[domain].pages) {
+        if (hiding[domain].pages[page].check(location.href)) {
             break
         }
     }
     return [domain, page]
+}
+
+function handleFirstTime(message){
+    if(message.firstTime){
+        let [website, page] = getLocation()
+        if(hiding[website].pages[page].firstTime != undefined){
+            hiding[website].pages[page].firstTime()
+        }else{
+        }
+    }
 }
 
 function showAll() {
@@ -78,12 +88,12 @@ function showOne(key) {
 
 function hideOne(key) {
     let [website, page] = getLocation()
-    chrome.storage.sync.get('active', function(response){
-        if(response.active){
+    chrome.storage.sync.get('active', function (response) {
+        if (response.active) {
             hiding[website].pages[page].elements[key].hide.true()
         }
     })
-    
+
 }
 
 const hiding = {
@@ -97,16 +107,19 @@ const hiding = {
                     return (url == "https://www.youtube.com/") || (url.startsWith("https://www.youtube.com/#"))
                 },
                 elements: {
-                    all: {
+                    homepage: {
                         hide: {
-                            true: function () {
-                                //
+                            true: function(){
+                                hideSearchBar()
                             },
-                            false: function () {
-                                //
-                            }
+                            false: function(){
+                                showSearchBar()
+                            },
                         }
                     }
+                },
+                firstTime: function(){
+                    addSearchBar()
                 }
             },
             watch: {
@@ -152,17 +165,18 @@ const hiding = {
                     },
                     merch: {
                         hide: {
-                            true: function(){
+                            true: function () {
                                 let current = document.getElementById("merch-shelf")
                                 current.style.display = "none"
                             },
-                            false: function(){
+                            false: function () {
                                 let current = document.getElementById("merch-shelf")
                                 current.style.display = "block"
                             }
                         }
                     }
-                }
+                },
+                firstTime: undefined//function () { }
             },
         }
     }
