@@ -41,14 +41,13 @@ function handleMessage(message, sender, sendResponse) {
 
 // check which url and which page the user is on
 function getLocation(){
-    let url = location.href
     for(var domain in hiding){
-        if(hiding[domain].check(url)){
+        if(hiding[domain].check(location.href)){
             break
         }
     }
     for(var page in hiding[domain].pages){
-        if(hiding[domain].pages[page].check(url)){
+        if(hiding[domain].pages[page].check(location.href)){
             break
         }
     }
@@ -56,32 +55,32 @@ function getLocation(){
 }
 
 function showAll() {
-    // TODO make this as universal as possible
-    for (let elem in hiding.youtube.pages.watch.elements) {
-        hiding.youtube.pages.watch.elements[elem].hide.false()
+    let [website, page] = getLocation()
+    for (let elem in hiding[website].pages[page].elements) {
+        hiding[website].pages[page].elements[elem].hide.false()
     }
 }
 
 function hideAll() {
-    // TODO make this as universal as possible
+    let [website, page] = getLocation()
     chrome.storage.sync.get('settings', function (response) {
-        for (let elem in hiding.youtube.pages.watch.elements) {
-            let setting = response.settings.youtube[elem].hide
-            hiding.youtube.pages.watch.elements[elem].hide[setting]()
+        for (let elem in hiding[website].pages[page].elements) {
+            let setting = response.settings[website][elem].hide
+            hiding[website].pages[page].elements[elem].hide[setting]()
         }
     })
 }
 
 function showOne(key) {
-    // TODO make this as universal as possible
-    hiding.youtube.pages.watch.elements[key].hide.false()
+    let [website, page] = getLocation()
+    hiding[website].pages[page].elements[key].hide.false()
 }
 
 function hideOne(key) {
-    // TODO make this as universal as possible
+    let [website, page] = getLocation()
     chrome.storage.sync.get('active', function(response){
         if(response.active){
-            hiding.youtube.pages.watch.elements[key].hide.true()
+            hiding[website].pages[page].elements[key].hide.true()
         }
     })
     
