@@ -7,6 +7,8 @@ chrome.runtime.onMessage.addListener(handleMessage);
 function handleMessage(message, sender, sendResponse) {
     console.log(message)
 
+    getLocation()
+
     switch (message.type) {
         case "hideAll":
             hideAll();
@@ -31,17 +33,27 @@ function handleMessage(message, sender, sendResponse) {
 
         if (location.href === "https://www.youtube.com/") {
             toggleYouTubeHomepage(message, settings)
-        } else if (new RegExp("https:\/\/www\.youtube\.com\/watch.*").test(location.href)) {
-            toggleYouTubeWatch(message, settings)
-            //hiding.youtube.comments(settings.youtube.comments.hide)
-            //hiding.youtube.playlists(settings.youtube.playlists.hide)
-            //hiding.youtube.recommendations(settings.youtube.recommendations.hide)
-        } else if (location.href.startsWith("https://www.youtube.com/")) {
+        }else if (location.href.startsWith("https://www.youtube.com/")) {
             addShowCSS();
         }
     })*/
 }
 
+// check which url and which page the user is on
+function getLocation(){
+    let url = location.href
+    for(var domain in hiding){
+        if(hiding[domain].check(url)){
+            break
+        }
+    }
+    for(var page in hiding[domain].pages){
+        if(hiding[domain].pages[page].check(url)){
+            break
+        }
+    }
+    return [domain, page]
+}
 
 function showAll() {
     // TODO make this as universal as possible
