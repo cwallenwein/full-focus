@@ -8,7 +8,7 @@ chrome.runtime.onInstalled.addListener(function () {
     chrome.storage.sync.set({
         settings: {
             youtube: {
-                homepage:{
+                homepage: {
                     hide: false,
                     id: undefined
                 },
@@ -33,50 +33,22 @@ chrome.runtime.onInstalled.addListener(function () {
     })
 })
 
-chrome.browserAction.onClicked.addListener(toggleStatus)
 
-function toggleStatus(tab) {
-    chrome.storage.sync.get('active', function (data) {
-        var status = data.active;
-        // toggle status
-        status = !status
-        //update icon
-        chrome.browserAction.setIcon({ path: status + ".png" });
-        //save update to chrome
-        chrome.storage.sync.set({ active: status });
-        //update current page if it is in pages
-        if (checkURL(tab.url)) {
-            let msg = {
-                type: false,
-                url: tab.url,
-                active: status,
-                firstTime: false //this page was open before, the toggle button was just pressed
-            }
-            chrome.tabs.sendMessage(tab.id, msg)
-        }
-    });
-}
-
-// send message to content-script whether elements have to be hidden or not
-// maybe you could speed this up if the message was only sent if stuff should be hidden
-// however this might not work because some elements are hidden from the start
-// hiding elements from the beginning has to be done, because otherwise you would see /n
-// recommendations for a short period of time as long as the website hasn't loaded completely
+// send message to content-script when the tab is updated
+// TODO find out why this eventListener only matters
+// when changing the current url in the url bar,
+// but not when clicking on a link (tried it with reccomendations)
 chrome.tabs.onUpdated.addListener(sendStatus)
 
 function sendStatus(tabId, changeInfo, tab) {
     if (changeInfo.status === 'complete') {
-        if (checkURL(tab.url)) {
-            chrome.storage.sync.get('active', function (data) {
-                let msg = {
-                    type: false,
-                    url: tab.url,
-                    active: data.active,
-                    firstTime: true //this page was just opended for the first time
-                }
-                chrome.tabs.sendMessage(tab.id, msg)
-            })
-        }
+        chrome.storage.sync.get('active', function (response) {
+            let message = {
+                type: response.active ? "hideAll" : "showAll",
+                firstTime: true //this page was just opended for the first time
+            }
+            chrome.tabs.sendMessage(tab.id, message)
+        })
     }
 }
 
