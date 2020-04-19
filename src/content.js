@@ -1,7 +1,16 @@
 'use strict';
 
+// TODO test extension for yt/watch
+
 // TODO fix search bar showing when user goes on yt/watch, clicks on yt logo and goes back one page
+// TODO try with checking if last url differs from current url
+// TODO try with css-file for each element to hide
+
 // TODO fix extension not working on startup
+// TODO block autoplay
+
+// TODO fix space being added under video when extension is activated
+
 
 chrome.runtime.onMessage.addListener(handleMessage);
 

@@ -18,7 +18,9 @@ chrome.storage.sync.get('active', function (response) {
         chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
             // if(checkURL(tabs.url))
             let message = {
-                type: response.active ? "hideAll" : "showAll"
+                type: response.active ? "hideAll" : "showAll",
+                source: "popup.js",
+                url: tabs[0].url
             }
             chrome.tabs.sendMessage(tabs[0].id, message, function () {
             });
@@ -52,7 +54,9 @@ chrome.storage.sync.get('settings', function (response) {
                 // if(checkURL(tabs.url))
                 let message = {
                     type: response.settings.youtube[key].hide ? "hideOne" : "showOne",
-                    element: key
+                    element: key,
+                    source: "popup.js",
+                    url: tabs[0].url
                 }
                 chrome.tabs.sendMessage(tabs[0].id, message, function () {
                 });

@@ -33,24 +33,30 @@ chrome.runtime.onInstalled.addListener(function () {
     })
 })
 
+function sendStatus(pTabID, pTabURL){
+    chrome.storage.sync.get('active', function (response) {
+        let message = {
+            type: response.active ? "hideAll" : "showAll",
+            firstTime: true, //this page was just opended for the first time
+            source: "background.js",
+            url: pTabURL
+        }
+        chrome.tabs.sendMessage(pTabID, message)
+    })
+}
+
+// send message to content-script when a new tab is opened
+chrome.tabs.onCreated.addListener(function(tab){
+    sendStatus(tab.id, tab.url)
+})
 
 // send message to content-script when the tab is updated
-// TODO find out why this eventListener only matters
-// when changing the current url in the url bar,
-// but not when clicking on a link (tried it with reccomendations)
-chrome.tabs.onUpdated.addListener(sendStatus)
-
-function sendStatus(tabId, changeInfo, tab) {
+chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     if (changeInfo.status === 'complete') {
-        chrome.storage.sync.get('active', function (response) {
-            let message = {
-                type: response.active ? "hideAll" : "showAll",
-                firstTime: true //this page was just opended for the first time
-            }
-            chrome.tabs.sendMessage(tab.id, message)
-        })
+        sendStatus(tabId, tab.url)
     }
-}
+})
+
 
 var pages = new Array("https://www.youtube.com/")
 
