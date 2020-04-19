@@ -146,11 +146,11 @@ const instructions = {
                     homepage: {
                         hide: {
                             true: function () {
-                                document.getElementById("identification").href = ""
-                            },
-                            false: function () {
                                 var url = chrome.runtime.getURL("searchbar.css");
                                 document.getElementById("identification").href = url
+                            },
+                            false: function () {
+                                document.getElementById("identification").href = ""
                             },
                         }
                     }

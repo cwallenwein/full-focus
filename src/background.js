@@ -4,12 +4,12 @@ console.log('background running');
 
 // when the extension is installed, show everything
 chrome.runtime.onInstalled.addListener(function () {
-    chrome.storage.sync.set({ active: false })
+    chrome.storage.sync.set({ active: true })
     chrome.storage.sync.set({
         settings: {
             youtube: {
                 homepage: {
-                    hide: false,
+                    hide: true,
                     id: "homepage"
                 },
                 comments: {
