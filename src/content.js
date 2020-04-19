@@ -36,17 +36,6 @@ function handleMessage(message, sender, sendResponse) {
             console.log("I don't know this type of message")
 
     }
-
-    /*chrome.storage.sync.get('settings', function (response) {
-
-        var settings = response.settings.youtube
-
-        if (location.href === "https://www.youtube.com/") {
-            toggleYouTubeHomepage(message, settings)
-        }else if (location.href.startsWith("https://www.youtube.com/")) {
-            addShowCSS();
-        }
-    })*/
 }
 
 // check which url and which page the user is on
@@ -66,35 +55,38 @@ function getLocation() {
 
 function handleFirstTime(message) {
     if (message.firstTime) {
-        let [website, page] = getLocation()
-        if (instructions[website].pages[page].firstTime != undefined) {
-            instructions[website].pages[page].firstTime()
-        } else {
-            //
+        let website = "youtube"
+        let allElementsOnWebsite = instructions[website]
+        for (let element in allElementsOnWebsite) {
+            if (allElementsOnWebsite[element].check(location.href)) {
+                if (allElementsOnWebsite[element].firstTime != undefined) {
+                    allElementsOnWebsite[element].firstTime()
+                }
+            }
         }
     }
 }
 
 function showAll() {
-    let [website, page] = getLocation()
-    console.log("showAll")
-    console.log(instructions)
-    console.log(instructions[website].pages[page])
-    for (let elem in instructions[website].pages[page].elements) {
-        console.log(elem)
-        instructions[website].pages[page].elements[elem].hide.false()
+    let website = "youtube"
+    let allElementsOnWebsite = instructions[website]
+    for (let element in allElementsOnWebsite) {
+        if (allElementsOnWebsite[element].check(location.href)) {
+            allElementsOnWebsite[element].hide.false()
+        }
     }
 }
 
 function hideAll() {
-    let [locationWebsite, locationPage] = getLocation()
+    let website = "youtube"
+    let allElementsOnWebsite = instructions[website]
     chrome.storage.sync.get('settings', function (response) {
-        for (let element in instructions[locationWebsite].pages[locationPage].elements) {
-            let setting = response.settings[locationWebsite][element].hide
-            let instructionsWebsite = instructions[locationWebsite]
-            let instructionsPage = instructionsWebsite.pages[locationPage]
-            let instructionElement = instructionsPage.elements[element]
-            instructionElement.hide[setting]()
+        for (let element in allElementsOnWebsite) {
+            if (allElementsOnWebsite[element].check(location.href)) {
+                let setting = response.settings[website][element].hide
+                let instructionElement = allElementsOnWebsite[element]
+                instructionElement.hide[setting]()
+            }
         }
     })
 }
@@ -102,243 +94,66 @@ function hideAll() {
 function showOne(key) {
     // how do I differentiate between the current website given by getLocation()
     // and the website from the instructions
-    let [website, page] = getLocation()
-    let element = instructions[website].pages[page].elements[key]
+    let website = "youtube"
+    let element = instructions[website][key]
     if (element != undefined) {
         element.hide.false()
     }
 }
 
 function hideOne(key) {
-    let [website, page] = getLocation()
+    let website = "youtube"
     chrome.storage.sync.get('active', function (response) {
         if (response.active) {
-            instructions[website].pages[page].elements[key].hide.true()
+            if (instructions[website][key].check(location.href)) {
+                instructions[website][key].hide.true()
+            }
         }
     })
 
 }
 
-console.log("toggleCSS")
-var links = document.getElementsByTagName("ext_link");
-var url = chrome.runtime.getURL("show.css");
-for (let link of links) {
-    if (link.getAttribute("data-name") === "show") {
-        if (message.show === true) {
-            link.href = url;
-        } else {
-            link.href = undefined
-        }
-    }
+
+const checking = {
+    general: (url) => url.startsWith("https://www.youtube.com/"),
+    homepage: (url) => (url == "https://www.youtube.com/" || url.startsWith("https://www.youtube.com/#")),
+    watch: (url) => url.startsWith("https://www.youtube.com/watch")
 }
 
+// always disable hiding an element when leaving the page
 const instructions = {
     youtube: {
-        check: function (url) {
-            return url.startsWith("https://www.youtube.com/")
-        },
-        pages: {
-            homepage: {
-                check: function (url) {
-                    return (url == "https://www.youtube.com/") || (url.startsWith("https://www.youtube.com/#"))
-                },
-                elements: {
-                    homepage: {
-                        hide: {
-                            true: function () {
-                                var url = chrome.runtime.getURL("searchbar.css");
-                                document.getElementById("identification").href = url
-                            },
-                            false: function () {
-                                document.getElementById("identification").href = ""
-                            },
-                        }
-                    }
-                },
-                firstTime: function () {
-                    console.log("add searchbar.css")
-                    var url = chrome.runtime.getURL("searchbar.css");
-                    var link = document.createElement("link");
-                    link.id = "identification"
-                    link.type = "text/css";
-                    link.rel = "stylesheet";
-                    link.href = url;
-                    document.head.appendChild(link)
-                }
-            },
-            watch: {
-                check: function (url) {
-                    return url.startsWith("https://www.youtube.com/watch")
-                },
-                elements: {
-                    comments: {
-                        hide: {
-                            true: function () {
-                                let current = document.getElementById("comments")
-                                current.style.display = "none";
-                            },
-                            false: function () {
-                                let current = document.getElementById("comments")
-                                current.style.display = "block";
-                            }
-                        }
-                    },
-                    playlists: {
-                        hide: {
-                            true: function () {
-                                let current = document.getElementById("playlist")
-                                current.style.display = "none"
-                            },
-                            false: function () {
-                                // TODO check if there even is a playlist on that page
-                                // if there is no playlist but flex is enabled this could result in a minor bug
-                                let current = document.getElementById("playlist")
-                                current.style.display = "flex"
-                            }
-                        }
-                    },
-                    recommendations: {
-                        hide: {
-                            true: function () {
-                                let current = document.getElementById("related")
-                                current.style.display = "none"
-                            },
-                            false: function () {
-                                let current = document.getElementById("related")
-                                current.style.display = "block"
-                            }
-                        }
-                    },
-                    merch: {
-                        hide: {
-                            true: function () {
-                                let current = document.getElementById("merch-shelf")
-                                current.style.display = "none"
-                            },
-                            false: function () {
-                                let current = document.getElementById("merch-shelf")
-                                current.style.display = "block"
-                            }
-                        }
-                    }
-                },
-                firstTime: undefined//function () { }
-            },
-        }
-    }
-}
-
-
-
-function toggleYouTubeHomepage(message) {
-    console.log("YTHomepage")
-    // add searchbar for the first time, after that only toggle it
-    if (message.firstTime) {
-        addSearchBar()
-    }
-
-    if (message.show) {
-        hideSearchBar()
-    } else {
-        showSearchBar()
-    }
-
-    // add show.css directly after everything is loaded
-    if (message.firstTime) { addShowCSS(); }
-}
-
-
-function addSearchBar() {
-    console.log("addSearchBar")
-    // create blank background
-    var background = document.createElement("div");
-    background.classList.add("ext_overlay");
-    background.setAttribute("id", "ext_background")
-
-    // create form
-    var form = document.createElement("ext_form")
-    form.classList.add("ext_overlay");
-    form.setAttribute("id", "ext_form")
-
-    // form.action = "#"
-    //form.onsubmit = function(){
-    // window.location.href  = "https://www.youtube.com/results?search_query=" + document.getElementById('ext_searchBar').value
-    //}
-
-    // create input field
-    var searchBar = document.createElement("input")
-    searchBar.setAttribute("type", "text")
-    searchBar.classList.add("ext_overlay");
-    searchBar.setAttribute("id", "ext_searchBar")
-
-    // create submit button
-    var submitButton = document.createElement("div")
-    //submitButton.setAttribute("type", "submit")
-    submitButton.classList.add("ext_overlay");
-    submitButton.setAttribute("id", "ext_submitButton")
-    submitButton.onclick = function () {
-        window.location.href = "https://www.youtube.com/results?search_query=" + document.getElementById('ext_searchBar').value
-    }
-    submitButton.append(document.createTextNode("Go"))
-
-    // add search bar and submit button to form
-    form.appendChild(searchBar)
-    form.appendChild(submitButton)
-
-    // add form and background screen to body
-    document.body.appendChild(background);
-    document.body.appendChild(form)
-}
-
-function showSearchBar() {
-    console.log("showSearchBar")
-    // make background and form visible
-    document.getElementById("ext_background").style.zIndex = "2500";
-    document.getElementById("ext_form").style.zIndex = "2501"
-    // disable scrolling
-    document.body.style.overflowY = "hidden"
-
-    // submit form on enter
-    var searchBar = document.getElementById("ext_searchBar");
-    searchBar.addEventListener("keyup", submitOnEnter)
-}
-
-
-
-function hideSearchBar() {
-    console.log("hideSearchBar")
-    // remove background and form again
-    document.getElementById("ext_background").style.zIndex = "-10";
-    document.getElementById("ext_form").style.zIndex = "-10";
-
-    // enable scrolling again
-    document.body.style.overflowY = "auto"
-
-    // disable submit form on enter
-    var searchBar = document.getElementById("ext_searchBar");
-    searchBar.removeEventListener("keyup", submitOnEnter)
-}
-
-function submitOnEnter() {
-    if (event.keyCode === 13) {
-        event.preventDefault()
-        document.getElementById("ext_submitButton").click()
-    }
-}
-
-/*const instructions = {
-    youtube: {
         homepage: {
+            check: checking.general,
             hide: {
                 true: function () {
-                    //
+                    if (checking.homepage(location.href)) {
+                        var url = chrome.runtime.getURL("searchbar.css");
+                        document.getElementById("identification").href = url
+                        console.log("yes searchbar")
+                    } else {
+                        document.getElementById("identification").href = "(unknown)"
+                        console.log("no searchbar 1")
+                    }
                 },
                 false: function () {
-                    //
-                }
+                    console.log("no searchbar 2")
+                    document.getElementById("identification").href = "(unknown)"
+                },
+            },
+            firstTime: function () {
+                console.log("add searchbar.css")
+                var url = chrome.runtime.getURL("searchbar.css");
+                var link = document.createElement("link");
+                link.id = "identification"
+                link.type = "text/css";
+                link.rel = "stylesheet";
+                link.href = url;
+                document.head.appendChild(link)
             }
         },
         comments: {
+            check: checking.watch,
             hide: {
                 true: function () {
                     let current = document.getElementById("comments")
@@ -351,18 +166,22 @@ function submitOnEnter() {
             }
         },
         playlists: {
+            check: checking.watch,
             hide: {
                 true: function () {
                     let current = document.getElementById("playlist")
                     current.style.display = "none"
                 },
                 false: function () {
+                    // TODO check if there even is a playlist on that page
+                    // if there is no playlist but flex is enabled this could result in a minor bug
                     let current = document.getElementById("playlist")
                     current.style.display = "flex"
                 }
             }
         },
         recommendations: {
+            check: checking.watch,
             hide: {
                 true: function () {
                     let current = document.getElementById("related")
@@ -374,5 +193,18 @@ function submitOnEnter() {
                 }
             }
         },
+        merch: {
+            check: checking.watch,
+            hide: {
+                true: function () {
+                    let current = document.getElementById("merch-shelf")
+                    current.style.display = "none"
+                },
+                false: function () {
+                    let current = document.getElementById("merch-shelf")
+                    current.style.display = "block"
+                }
+            }
+        }
     }
-}*/
+}
