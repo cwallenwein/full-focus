@@ -1,6 +1,7 @@
 'use strict';
 
 // TODO fix search bar showing when user goes on yt/watch, clicks on yt logo and goes back one page
+// TODO fix extension not working on startup
 
 chrome.runtime.onMessage.addListener(handleMessage);
 
@@ -9,6 +10,8 @@ function handleMessage(message, sender, sendResponse) {
 
     handleFirstTime(message)
 
+    // TODO modify switch-case statement so it doesn't has to change when new functionality is added
+    // but before that check if new functionality is even needed
     switch (message.type) {
         case "hideAll":
             hideAll();
@@ -41,13 +44,13 @@ function handleMessage(message, sender, sendResponse) {
 
 // check which url and which page the user is on
 function getLocation() {
-    for (var domain in hiding) {
-        if (hiding[domain].check(location.href)) {
+    for (var domain in instructions) {
+        if (instructions[domain].check(location.href)) {
             break
         }
     }
-    for (var page in hiding[domain].pages) {
-        if (hiding[domain].pages[page].check(location.href)) {
+    for (var page in instructions[domain].pages) {
+        if (instructions[domain].pages[page].check(location.href)) {
             break
         }
     }
@@ -57,46 +60,59 @@ function getLocation() {
 function handleFirstTime(message){
     if(message.firstTime){
         let [website, page] = getLocation()
-        if(hiding[website].pages[page].firstTime != undefined){
-            hiding[website].pages[page].firstTime()
+        if(instructions[website].pages[page].firstTime != undefined){
+            instructions[website].pages[page].firstTime()
         }else{
+            //
         }
     }
 }
 
 function showAll() {
     let [website, page] = getLocation()
-    for (let elem in hiding[website].pages[page].elements) {
-        hiding[website].pages[page].elements[elem].hide.false()
+    console.log("showAll")
+    console.log(instructions)
+    console.log(instructions[website].pages[page])
+    for (let elem in instructions[website].pages[page].elements) {
+        console.log(elem)
+        instructions[website].pages[page].elements[elem].hide.false()
     }
 }
 
 function hideAll() {
-    let [website, page] = getLocation()
+    let [locationWebsite, locationPage] = getLocation()
     chrome.storage.sync.get('settings', function (response) {
-        for (let elem in hiding[website].pages[page].elements) {
-            let setting = response.settings[website][elem].hide
-            hiding[website].pages[page].elements[elem].hide[setting]()
+        for (let element in instructions[locationWebsite].pages[locationPage].elements) {
+            let setting = response.settings[locationWebsite][element].hide
+            let instructionsWebsite = instructions[locationWebsite]
+            let instructionsPage = instructionsWebsite.pages[locationPage]
+            let instructionElement = instructionsPage.elements[element]
+            instructionElement.hide[setting]()
         }
     })
 }
 
 function showOne(key) {
+    // how do I differentiate between the current website given by getLocation()
+    // and the website from the instructions
     let [website, page] = getLocation()
-    hiding[website].pages[page].elements[key].hide.false()
+    let element = instructions[website].pages[page].elements[key]
+    if (element != undefined){
+        element.hide.false()
+    }
 }
 
 function hideOne(key) {
     let [website, page] = getLocation()
     chrome.storage.sync.get('active', function (response) {
         if (response.active) {
-            hiding[website].pages[page].elements[key].hide.true()
+            instructions[website].pages[page].elements[key].hide.true()
         }
     })
 
 }
 
-const hiding = {
+const instructions = {
     youtube: {
         check: function (url) {
             return url.startsWith("https://www.youtube.com/")
@@ -305,7 +321,7 @@ function submitOnEnter() {
     }
 }
 
-/*const hiding = {
+/*const instructions = {
     youtube: {
         homepage: {
             hide: {
