@@ -1,12 +1,10 @@
 'use strict';
 
-// TODO test extension for yt/watch
-
 // TODO fix search bar showing when user goes on yt/watch, clicks on yt logo and goes back one page
 // TODO try with checking if last url differs from current url
 // TODO try with css-file for each element to hide
+// TODO also fix tabs in the background when settings were changed
 
-// TODO fix extension not working on startup
 // TODO block autoplay
 
 // TODO fix space being added under video when extension is activated
@@ -66,12 +64,12 @@ function getLocation() {
     return [domain, page]
 }
 
-function handleFirstTime(message){
-    if(message.firstTime){
+function handleFirstTime(message) {
+    if (message.firstTime) {
         let [website, page] = getLocation()
-        if(instructions[website].pages[page].firstTime != undefined){
+        if (instructions[website].pages[page].firstTime != undefined) {
             instructions[website].pages[page].firstTime()
-        }else{
+        } else {
             //
         }
     }
@@ -106,7 +104,7 @@ function showOne(key) {
     // and the website from the instructions
     let [website, page] = getLocation()
     let element = instructions[website].pages[page].elements[key]
-    if (element != undefined){
+    if (element != undefined) {
         element.hide.false()
     }
 }
@@ -119,6 +117,19 @@ function hideOne(key) {
         }
     })
 
+}
+
+console.log("toggleCSS")
+var links = document.getElementsByTagName("ext_link");
+var url = chrome.runtime.getURL("show.css");
+for (let link of links) {
+    if (link.getAttribute("data-name") === "show") {
+        if (message.show === true) {
+            link.href = url;
+        } else {
+            link.href = undefined
+        }
+    }
 }
 
 const instructions = {
@@ -134,17 +145,25 @@ const instructions = {
                 elements: {
                     homepage: {
                         hide: {
-                            true: function(){
-                                hideSearchBar()
+                            true: function () {
+                                document.getElementById("identification").href = ""
                             },
-                            false: function(){
-                                showSearchBar()
+                            false: function () {
+                                var url = chrome.runtime.getURL("searchbar.css");
+                                document.getElementById("identification").href = url
                             },
                         }
                     }
                 },
-                firstTime: function(){
-                    addSearchBar()
+                firstTime: function () {
+                    console.log("add searchbar.css")
+                    var url = chrome.runtime.getURL("searchbar.css");
+                    var link = document.createElement("link");
+                    link.id = "identification"
+                    link.type = "text/css";
+                    link.rel = "stylesheet";
+                    link.href = url;
+                    document.head.appendChild(link)
                 }
             },
             watch: {
@@ -171,6 +190,8 @@ const instructions = {
                                 current.style.display = "none"
                             },
                             false: function () {
+                                // TODO check if there even is a playlist on that page
+                                // if there is no playlist but flex is enabled this could result in a minor bug
                                 let current = document.getElementById("playlist")
                                 current.style.display = "flex"
                             }
@@ -226,31 +247,6 @@ function toggleYouTubeHomepage(message) {
     if (message.firstTime) { addShowCSS(); }
 }
 
-function addShowCSS() {
-    console.log("addShowCss")
-    var url = chrome.runtime.getURL("show.css");
-    var link = document.createElement("ext_link");
-    link.type = "text/css";
-    link.rel = "stylesheet";
-    link.href = url;
-    link.dataset.name = "show"
-    document.head.appendChild(link)
-}
-
-function toggleCSS(message) {
-    console.log("toggleCSS")
-    var links = document.getElementsByTagName("ext_link");
-    var url = chrome.runtime.getURL("show.css");
-    for (let link of links) {
-        if (link.getAttribute("data-name") === "show") {
-            if (message.show === true) {
-                link.href = url;
-            } else {
-                link.href = undefined
-            }
-        }
-    }
-}
 
 function addSearchBar() {
     console.log("addSearchBar")
