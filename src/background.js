@@ -4,12 +4,12 @@ console.log('background running');
 
 // when the extension is installed, show everything
 chrome.runtime.onInstalled.addListener(function () {
-    chrome.storage.sync.set({ active: true })
+    chrome.storage.sync.set({ active: false })
     chrome.storage.sync.set({
         settings: {
             youtube: {
                 homepage: {
-                    hide: true,
+                    hide: false,
                     id: "homepage"
                 },
                 comments: {
@@ -41,6 +41,7 @@ function sendStatus(pTabID, pTabURL){
             source: "background.js",
             url: pTabURL
         }
+        console.log(message)
         chrome.tabs.sendMessage(pTabID, message)
     })
 }
@@ -56,13 +57,3 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
         sendStatus(tabId, tab.url)
     }
 })
-
-
-var pages = new Array("https://www.youtube.com/")
-
-function checkURL(url) {
-    //return (pages.indexOf(url) != -1)
-    //console.log("checking " + url)
-    //console.log("returning " + url.startsWith(pages[0]))
-    return url.startsWith(pages[0])
-}

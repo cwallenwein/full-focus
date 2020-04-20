@@ -1,3 +1,15 @@
+// TODO both messages have to be sent to all open YouTube tabs, not only the active one
+// otherwise a page in the background wouldn't update
+// or you could find another way
+// propably it is smartest to update on focus, because this would cover most usecases and will be less work when clicking
+// but somehow you have to make sure it is not always sending the message when focusing, because there might be many useless requests
+// a useless request might be, if you have music on youtube on in one page, and you sometimes click on it to go to another timestamp in the video
+// not sure if this happens that many times
+
+// TODO not closing when searching from homepage
+
+// TODO remove redundant code
+
 // activate extension
 chrome.storage.sync.get('active', function (response) {
     var current = document.getElementById("extension")
@@ -22,8 +34,8 @@ chrome.storage.sync.get('active', function (response) {
                 source: "popup.js",
                 url: tabs[0].url
             }
-            chrome.tabs.sendMessage(tabs[0].id, message, function () {
-            });
+            console.log(message)
+            chrome.tabs.sendMessage(tabs[0].id, message);
         })
     })
 })
@@ -58,19 +70,9 @@ chrome.storage.sync.get('settings', function (response) {
                     source: "popup.js",
                     url: tabs[0].url
                 }
-                chrome.tabs.sendMessage(tabs[0].id, message, function () {
-                });
+                console.log(message)
+                chrome.tabs.sendMessage(tabs[0].id, message);
             })
         })
     }
 })
-
-// TODO: check website-urls in background.js
-var pages = new Array("https://www.youtube.com/")
-
-function checkURL(url) {
-    //return (pages.indexOf(url) != -1)
-    //console.log("checking " + url)
-    //console.log("returning " + url.startsWith(pages[0]))
-    return url.startsWith(pages[0])
-}

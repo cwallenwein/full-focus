@@ -1,8 +1,4 @@
 'use strict';
-
-// TODO fix search bar showing when user goes on yt/watch, clicks on yt logo and goes back one page
-// TODO try with checking if last url differs from current url
-// TODO try with css-file for each element to hide
 // TODO also fix tabs in the background when settings were changed
 
 // TODO block autoplay
@@ -34,8 +30,9 @@ function handleMessage(message, sender, sendResponse) {
             break;
         default:
             console.log("I don't know this type of message")
-
     }
+
+    return true
 }
 
 // check which url and which page the user is on
@@ -56,11 +53,11 @@ function getLocation() {
 function handleFirstTime(message) {
     if (message.firstTime) {
         let website = "youtube"
-        let allElementsOnWebsite = instructions[website]
-        for (let element in allElementsOnWebsite) {
-            if (allElementsOnWebsite[element].check(location.href)) {
-                if (allElementsOnWebsite[element].firstTime != undefined) {
-                    allElementsOnWebsite[element].firstTime()
+        let elementsOnWebsite = instructions[website]
+        for (let element in elementsOnWebsite) {
+            if (elementsOnWebsite[element].check(location.href)) {
+                if (elementsOnWebsite[element].firstTime != undefined) {
+                    elementsOnWebsite[element].firstTime()
                 }
             }
         }
@@ -69,44 +66,60 @@ function handleFirstTime(message) {
 
 function showAll() {
     let website = "youtube"
-    let allElementsOnWebsite = instructions[website]
-    for (let element in allElementsOnWebsite) {
-        if (allElementsOnWebsite[element].check(location.href)) {
-            allElementsOnWebsite[element].hide.false()
+    let elementsOnWebsite = instructions[website]
+    for (let elementName in elementsOnWebsite) {
+        let element = elementsOnWebsite[elementName]
+
+        if (element.check(location.href)) {
+            element.hide.false()
         }
     }
 }
 
+// should all elements be disabled when page is not on check page?
+// but the scripts will try to locate elements that are not on the page
+
 function hideAll() {
     let website = "youtube"
-    let allElementsOnWebsite = instructions[website]
+    let elementsOnWebsite = instructions[website]
+
     chrome.storage.sync.get('settings', function (response) {
-        for (let element in allElementsOnWebsite) {
-            if (allElementsOnWebsite[element].check(location.href)) {
-                let setting = response.settings[website][element].hide
-                let instructionElement = allElementsOnWebsite[element]
-                instructionElement.hide[setting]()
+
+        for (let elementName in elementsOnWebsite) {
+            let element = elementsOnWebsite[elementName]
+            let setting = response.settings[website][elementName].hide
+
+            if (element.check(location.href)) {
+                element.hide[setting]()
+            } else if (element.disableWhenNotOnPage != undefined) {
+                if (element.disableWhenNotOnPage == true) {
+                    element.hide.false()
+                }
             }
         }
     })
 }
 
 function showOne(key) {
-    // how do I differentiate between the current website given by getLocation()
-    // and the website from the instructions
     let website = "youtube"
     let element = instructions[website][key]
+
     if (element != undefined) {
-        element.hide.false()
+        if (element.check(location.href)) {
+            element.hide.false()
+        }
     }
 }
 
 function hideOne(key) {
     let website = "youtube"
+    let element = instructions[website][key]
+
     chrome.storage.sync.get('active', function (response) {
-        if (response.active) {
-            if (instructions[website][key].check(location.href)) {
-                instructions[website][key].hide.true()
+
+        if (response.active && element != undefined) {
+            if (element.check(location.href)) {
+                element.hide.true()
             }
         }
     })
@@ -120,25 +133,24 @@ const checking = {
     watch: (url) => url.startsWith("https://www.youtube.com/watch")
 }
 
-// always disable hiding an element when leaving the page
+
+
+// TODO only enable hiding elements when on the page as stated in check
+// disable all that are not on the check page
 const instructions = {
     youtube: {
         homepage: {
-            check: checking.general,
+            check: checking.homepage,
             hide: {
                 true: function () {
-                    if (checking.homepage(location.href)) {
-                        var url = chrome.runtime.getURL("searchbar.css");
-                        document.getElementById("identification").href = url
-                        console.log("yes searchbar")
-                    } else {
-                        document.getElementById("identification").href = "(unknown)"
-                        console.log("no searchbar 1")
-                    }
+
+                    var url = chrome.runtime.getURL("searchbar.css");
+                    document.getElementById("identification").disabled = false
+                    console.log("no homepage")
                 },
                 false: function () {
-                    console.log("no searchbar 2")
-                    document.getElementById("identification").href = "(unknown)"
+                    console.log("show homepage 2")
+                    document.getElementById("identification").disabled = true
                 },
             },
             firstTime: function () {
@@ -150,7 +162,8 @@ const instructions = {
                 link.rel = "stylesheet";
                 link.href = url;
                 document.head.appendChild(link)
-            }
+            },
+            disableWhenNotOnPage: true
         },
         comments: {
             check: checking.watch,
@@ -158,10 +171,12 @@ const instructions = {
                 true: function () {
                     let current = document.getElementById("comments")
                     current.style.display = "none";
+                    console.log("no comments")
                 },
                 false: function () {
                     let current = document.getElementById("comments")
                     current.style.display = "block";
+                    console.log("show comments")
                 }
             }
         },
@@ -171,12 +186,14 @@ const instructions = {
                 true: function () {
                     let current = document.getElementById("playlist")
                     current.style.display = "none"
+                    console.log("no playlists")
                 },
                 false: function () {
                     // TODO check if there even is a playlist on that page
                     // if there is no playlist but flex is enabled this could result in a minor bug
                     let current = document.getElementById("playlist")
                     current.style.display = "flex"
+                    console.log("show playlists")
                 }
             }
         },
@@ -186,10 +203,12 @@ const instructions = {
                 true: function () {
                     let current = document.getElementById("related")
                     current.style.display = "none"
+                    console.log("no recommendations")
                 },
                 false: function () {
                     let current = document.getElementById("related")
                     current.style.display = "block"
+                    console.log("show recommendations")
                 }
             }
         },
@@ -199,10 +218,12 @@ const instructions = {
                 true: function () {
                     let current = document.getElementById("merch-shelf")
                     current.style.display = "none"
+                    console.log("no merch")
                 },
                 false: function () {
                     let current = document.getElementById("merch-shelf")
                     current.style.display = "block"
+                    console.log("show merch")
                 }
             }
         }
