@@ -133,10 +133,11 @@ const checking = {
 
 
 
+
 // TODO hide searchbar when not on page
 // either add stylesheet to every page and disable it if the url is not YT/homepage
 // or only disable stylesheet if it was on before and then going to YT/results
-// but this might be complicated because you have to track moving back and forth and this might not be easy
+// but this might be complicated because moving back and
 
 // disable all that are not on the check page
 const instructions = {
@@ -145,10 +146,17 @@ const instructions = {
             check: checking.homepage,
             hide: {
                 true: function () {
-                    document.getElementById("stylesheetSearchbar").disabled = false
+                    let element = document.getElementById("stylesheetSearchbar")
+                    if(element != null){
+                        element.disabled = false
+                    }
+                    
                 },
                 false: function () {
-                    document.getElementById("stylesheetSearchbar").disabled = true
+                    let element = document.getElementById("stylesheetSearchbar")
+                    if(element != null){
+                        element.disabled = true
+                    }
                 },
             },
             firstTime: function () {
@@ -162,19 +170,19 @@ const instructions = {
                 link.disabled = true
                 document.head.appendChild(link)
             },
-            disableWhenNotOnPage: true,
+            disableWhenNotOnPage: true
         },
         comments: {
             check: checking.watch,
             hide: {
                 true: function () {
-                    let current = document.getElementById("comments")
-                    current.style.display = "none";
+                    let element = document.getElementById("comments")
+                    element.style.display = "none";
                     console.log("no comments")
                 },
                 false: function () {
-                    let current = document.getElementById("comments")
-                    current.style.display = "block";
+                    let element = document.getElementById("comments")
+                    element.style.display = "block";
                     console.log("show comments")
                 }
             }
@@ -183,15 +191,15 @@ const instructions = {
             check: checking.watch,
             hide: {
                 true: function () {
-                    let current = document.getElementById("playlist")
-                    current.style.display = "none"
+                    let element = document.getElementById("playlist")
+                    element.style.display = "none"
                     console.log("no playlists")
                 },
                 false: function () {
                     // TODO check if there even is a playlist on that page
                     // if there is no playlist but flex is enabled this could result in a minor bug
-                    let current = document.getElementById("playlist")
-                    current.style.display = "flex"
+                    let element = document.getElementById("playlist")
+                    element.style.display = "flex"
                     console.log("show playlists")
                 }
             }
@@ -200,13 +208,13 @@ const instructions = {
             check: checking.watch,
             hide: {
                 true: function () {
-                    let current = document.getElementById("related")
-                    current.style.display = "none"
+                    let element = document.getElementById("related")
+                    element.style.display = "none"
                     console.log("no recommendations")
                 },
                 false: function () {
-                    let current = document.getElementById("related")
-                    current.style.display = "block"
+                    let element = document.getElementById("related")
+                    element.style.display = "block"
                     console.log("show recommendations")
                 }
             }
@@ -215,13 +223,13 @@ const instructions = {
             check: checking.watch,
             hide: {
                 true: function () {
-                    let current = document.getElementById("merch-shelf")
-                    current.style.display = "none"
+                    let element = document.getElementById("merch-shelf")
+                    element.style.display = "none"
                     console.log("no merch")
                 },
                 false: function () {
-                    let current = document.getElementById("merch-shelf")
-                    current.style.display = "block"
+                    let element = document.getElementById("merch-shelf")
+                    element.style.display = "block"
                     console.log("show merch")
                 }
             }
@@ -230,13 +238,13 @@ const instructions = {
             check: checking.watch,
             hide: {
                 true: function(){
-                    let current = document.getElementsByClassName("ytp-endscreen-content")[0]
-                    current.style.display = "none"
+                    let element = document.getElementsByClassName("ytp-endscreen-content")[0]
+                    element.style.display = "none"
                     console.log("no recommendations after video")
                 },
                 false: function(){
-                    let current = document.getElementsByClassName("ytp-endscreen-content")[0]
-                    current.style.display = "block"
+                    let element = document.getElementsByClassName("ytp-endscreen-content")[0]
+                    element.style.display = "block"
                     console.log("show recommendations after video")
                 }
             }
