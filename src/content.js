@@ -7,10 +7,6 @@
 
 // TODO block recommendations at the end of a video
 
-// TODO change icon when extension is activated/deactivated
-// chrome.browserAction.setIcon({path: status + ".png"});
-
-
 chrome.runtime.onMessage.addListener(handleMessage);
 
 function handleMessage(message, sender, sendResponse) {
@@ -137,7 +133,11 @@ const checking = {
 
 
 
-// TODO only enable hiding elements when on the page as stated in check
+// TODO hide searchbar when not on page
+// either add stylesheet to every page and disable it if the url is not YT/homepage
+// or only disable stylesheet if it was on before and then going to YT/results
+// but this might be complicated because you have to track moving back and forth and this might not be easy
+
 // disable all that are not on the check page
 const instructions = {
     youtube: {
@@ -162,7 +162,7 @@ const instructions = {
                 link.disabled = true
                 document.head.appendChild(link)
             },
-            disableWhenNotOnPage: true
+            disableWhenNotOnPage: true,
         },
         comments: {
             check: checking.watch,
@@ -223,6 +223,21 @@ const instructions = {
                     let current = document.getElementById("merch-shelf")
                     current.style.display = "block"
                     console.log("show merch")
+                }
+            }
+        },
+        recommendationsAfterVideo: {
+            check: checking.watch,
+            hide: {
+                true: function(){
+                    let current = document.getElementsByClassName("ytp-endscreen-content")[0]
+                    current.style.display = "none"
+                    console.log("no recommendations after video")
+                },
+                false: function(){
+                    let current = document.getElementsByClassName("ytp-endscreen-content")[0]
+                    current.style.display = "block"
+                    console.log("show recommendations after video")
                 }
             }
         }

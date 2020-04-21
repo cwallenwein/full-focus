@@ -4,6 +4,7 @@ console.log('background running');
 
 // when the extension is installed, show everything
 chrome.runtime.onInstalled.addListener(function () {
+    
     let activeOnStart = false
     chrome.storage.sync.set({ active: activeOnStart })
     updateIcon(activeOnStart)
@@ -31,6 +32,10 @@ chrome.runtime.onInstalled.addListener(function () {
                     hide: false,
                     id: "merch"
                 },
+                recommendationsAfterVideo: {
+                    hide: false,
+                    id: "recommendationsAfterVideo"
+                }
             }
         }
     })
