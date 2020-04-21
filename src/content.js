@@ -242,6 +242,23 @@ const instructions = {
                     console.log("show recommendations after video")
                 }
             }
+        },
+        autoplay: {
+            check: checking.watch,
+            hide: {
+                true: function(){
+                    let element = document.getElementById("toggle")
+                    if(element.getAttribute("aria-pressed")){
+                        element.click()
+                    }
+                },
+                false: function(){
+                    let element = document.getElementById("toggle")
+                    if(element.getAttribute("aria-pressed")){
+                        element.click()
+                    }
+                }
+            }
         }
     }
 }

@@ -2,6 +2,8 @@
 
 console.log('background running');
 
+// TODO not all elements are about hiding and showing stuff, for example enabling autoplay. Maybe find another name
+
 // when the extension is installed, show everything
 chrome.runtime.onInstalled.addListener(function () {
     
@@ -35,6 +37,10 @@ chrome.runtime.onInstalled.addListener(function () {
                 recommendationsAfterVideo: {
                     hide: false,
                     id: "recommendationsAfterVideo"
+                },
+                autoplay: {
+                    hide: false,
+                    id: "autplay"
                 }
             }
         }
