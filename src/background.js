@@ -4,7 +4,10 @@ console.log('background running');
 
 // when the extension is installed, show everything
 chrome.runtime.onInstalled.addListener(function () {
-    chrome.storage.sync.set({ active: false })
+    let activeOnStart = false
+    chrome.storage.sync.set({ active: activeOnStart })
+    updateIcon(activeOnStart)
+
     chrome.storage.sync.set({
         settings: {
             youtube: {
@@ -42,6 +45,7 @@ function sendStatus(pTabID, pTabURL){
             url: pTabURL
         }
         console.log(message)
+        updateIcon(response.active)
         chrome.tabs.sendMessage(pTabID, message)
     })
 }
@@ -57,3 +61,7 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
         sendStatus(tabId, tab.url)
     }
 })
+
+function updateIcon(showIcon){
+    chrome.browserAction.setIcon({path: showIcon + ".png"});
+}

@@ -20,6 +20,9 @@ chrome.storage.sync.get('active', function (response) {
         // toggle setting
         response.active = !response.active
 
+        // TODO update icon
+        chrome.browserAction.setIcon({path: response.active + ".png"});
+
         // update setting in storage
         chrome.storage.sync.set({ active: response.active })
 

@@ -5,6 +5,11 @@
 
 // TODO fix space being added under video when extension is activated
 
+// TODO block recommendations at the end of a video
+
+// TODO change icon when extension is activated/deactivated
+// chrome.browserAction.setIcon({path: status + ".png"});
+
 
 chrome.runtime.onMessage.addListener(handleMessage);
 
