@@ -5,8 +5,6 @@
 
 // TODO fix space being added under video when extension is activated
 
-// TODO block recommendations at the end of a video
-
 chrome.runtime.onMessage.addListener(handleMessage);
 
 function handleMessage(message, sender, sendResponse) {
@@ -131,15 +129,6 @@ const checking = {
     watch: (url) => url.startsWith("https://www.youtube.com/watch")
 }
 
-
-
-
-// TODO hide searchbar when not on page
-// either add stylesheet to every page and disable it if the url is not YT/homepage
-// or only disable stylesheet if it was on before and then going to YT/results
-// but this might be complicated because moving back and
-
-// disable all that are not on the check page
 const instructions = {
     youtube: {
         homepage: {
@@ -147,14 +136,13 @@ const instructions = {
             hide: {
                 true: function () {
                     let element = document.getElementById("stylesheetSearchbar")
-                    if(element != null){
+                    if (element != null) {
                         element.disabled = false
                     }
-                    
                 },
                 false: function () {
                     let element = document.getElementById("stylesheetSearchbar")
-                    if(element != null){
+                    if (element != null) {
                         element.disabled = true
                     }
                 },
@@ -193,14 +181,20 @@ const instructions = {
                 true: function () {
                     let element = document.getElementById("playlist")
                     element.style.display = "none"
-                    console.log("no playlists")
+                    console.log("no playlists 1")
                 },
                 false: function () {
-                    // TODO check if there even is a playlist on that page
-                    // if there is no playlist but flex is enabled this could result in a minor bug
+                    // only set to flex if there should even be a playlist on that page
                     let element = document.getElementById("playlist")
-                    element.style.display = "flex"
-                    console.log("show playlists")
+                    if (element.hasAttribute("disable-upgrade") === false) {
+                        element.style.display = "flex"
+                        console.log("show playlists")
+                    } else {
+                        element.style.display = "none"
+                        console.log("no playlists 2")
+                    }
+
+
                 }
             }
         },
@@ -237,12 +231,12 @@ const instructions = {
         recommendationsAfterVideo: {
             check: checking.watch,
             hide: {
-                true: function(){
+                true: function () {
                     let element = document.getElementsByClassName("ytp-endscreen-content")[0]
                     element.style.display = "none"
                     console.log("no recommendations after video")
                 },
-                false: function(){
+                false: function () {
                     let element = document.getElementsByClassName("ytp-endscreen-content")[0]
                     element.style.display = "block"
                     console.log("show recommendations after video")
