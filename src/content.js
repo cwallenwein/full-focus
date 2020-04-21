@@ -13,7 +13,7 @@ function handleMessage(message, sender, sendResponse) {
 
     handleFirstTime(message)
 
-    // TODO modify switch-case statement so it doesn't has to change when new functionality is added
+    // TODO modify switch-case statement so it doesn't have to change when new functionality is added
     // but before that check if new functionality is even needed
     switch (message.type) {
         case "hideAll":
@@ -75,9 +75,6 @@ function showAll() {
         }
     }
 }
-
-// should all elements be disabled when page is not on check page?
-// but the scripts will try to locate elements that are not on the page
 
 function hideAll() {
     let website = "youtube"
@@ -143,24 +140,21 @@ const instructions = {
             check: checking.homepage,
             hide: {
                 true: function () {
-
-                    var url = chrome.runtime.getURL("searchbar.css");
-                    document.getElementById("identification").disabled = false
-                    console.log("no homepage")
+                    document.getElementById("stylesheetSearchbar").disabled = false
                 },
                 false: function () {
-                    console.log("show homepage 2")
-                    document.getElementById("identification").disabled = true
+                    document.getElementById("stylesheetSearchbar").disabled = true
                 },
             },
             firstTime: function () {
                 console.log("add searchbar.css")
                 var url = chrome.runtime.getURL("searchbar.css");
                 var link = document.createElement("link");
-                link.id = "identification"
+                link.id = "stylesheetSearchbar"
                 link.type = "text/css";
                 link.rel = "stylesheet";
                 link.href = url;
+                link.disabled = true
                 document.head.appendChild(link)
             },
             disableWhenNotOnPage: true

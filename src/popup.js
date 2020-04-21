@@ -6,8 +6,6 @@
 // a useless request might be, if you have music on youtube on in one page, and you sometimes click on it to go to another timestamp in the video
 // not sure if this happens that many times
 
-// TODO not closing when searching from homepage
-
 // TODO remove redundant code
 
 // activate extension
