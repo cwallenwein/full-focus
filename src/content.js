@@ -251,6 +251,7 @@ const instructions = {
                     if(element != null){
                         if(element.getAttribute("aria-pressed")){
                             element.click()
+                            console.log("disable autoplay")
                         }
                     }
                 },
@@ -259,7 +260,25 @@ const instructions = {
                     if(element != null){
                         if(element.getAttribute("aria-pressed")){
                             element.click()
+                            console.log("enable autoplay")
                         }
+                    }
+                }
+            }
+        },
+        chat: {
+            check: checking.watch,
+            hide: {
+                true: function(){
+                    let element = document.getElementById("chat")
+                    if(element != null){
+                        element.style.display = "none"
+                    }
+                },
+                false: function(){
+                    let element = document.getElementById("chat")
+                    if(element != null){
+                        element.style.display = "flex"
                     }
                 }
             }

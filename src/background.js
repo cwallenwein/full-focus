@@ -41,6 +41,10 @@ chrome.runtime.onInstalled.addListener(function () {
                 autoplay: {
                     hide: false,
                     id: "autplay"
+                },
+                chat: {
+                    hide: false,
+                    id: "chat"
                 }
             }
         }
