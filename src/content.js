@@ -200,6 +200,8 @@ const instructions = {
         },
         recommendations: {
             check: checking.watch,
+            // TODO when recommendations are hidden the button for autoplay is also hidden
+            // fix this or check whether it is possible to click a button that is not visible
             hide: {
                 true: function () {
                     let element = document.getElementById("related")
@@ -230,6 +232,7 @@ const instructions = {
         },
         recommendationsAfterVideo: {
             check: checking.watch,
+            // TODO why is this returning undefined
             hide: {
                 true: function () {
                     let element = document.getElementsByClassName("ytp-endscreen-content")[0]
@@ -246,10 +249,13 @@ const instructions = {
         autoplay: {
             check: checking.watch,
             hide: {
+                // TODO don't click on button when extension is activated
+                // keep old settings
                 true: function(){
                     let element = document.getElementById("toggle")
                     if(element != null){
-                        if(element.getAttribute("aria-pressed")){
+                        console.log(element)
+                        if(element.getAttribute("aria-pressed")  === "true"){
                             element.click()
                             console.log("disable autoplay")
                         }
@@ -258,7 +264,8 @@ const instructions = {
                 false: function(){
                     let element = document.getElementById("toggle")
                     if(element != null){
-                        if(element.getAttribute("aria-pressed")){
+                        console.log(element)
+                        if(element.getAttribute("aria-pressed") === "false"){
                             element.click()
                             console.log("enable autoplay")
                         }
