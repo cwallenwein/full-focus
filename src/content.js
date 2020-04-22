@@ -1,10 +1,6 @@
 'use strict';
 // TODO also fix tabs in the background when settings were changed
 
-// TODO block autoplay
-
-// TODO fix space being added under video when extension is activated
-
 chrome.runtime.onMessage.addListener(handleMessage);
 
 function handleMessage(message, sender, sendResponse) {
@@ -200,8 +196,8 @@ const instructions = {
         },
         recommendations: {
             check: checking.watch,
-            // TODO when recommendations are hidden the button for autoplay is also hidden
-            // fix this or check whether it is possible to click a button that is not visible
+            // when recommendations are hidden the button for autoplay is also hidden
+            // but it is still possible to click() the button
             hide: {
                 true: function () {
                     let element = document.getElementById("related")
@@ -232,7 +228,7 @@ const instructions = {
         },
         recommendationsAfterVideo: {
             check: checking.watch,
-            // TODO why is this returning undefined
+            // TODO why is this returning undefined (sometimes)
             hide: {
                 true: function () {
                     let element = document.getElementsByClassName("ytp-endscreen-content")[0]
@@ -249,8 +245,6 @@ const instructions = {
         autoplay: {
             check: checking.watch,
             hide: {
-                // TODO don't click on button when extension is activated
-                // keep old settings
                 true: function(){
                     let element = document.getElementById("toggle")
                     if(element != null){
