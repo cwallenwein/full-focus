@@ -248,14 +248,18 @@ const instructions = {
             hide: {
                 true: function(){
                     let element = document.getElementById("toggle")
-                    if(element.getAttribute("aria-pressed")){
-                        element.click()
+                    if(element != null){
+                        if(element.getAttribute("aria-pressed")){
+                            element.click()
+                        }
                     }
                 },
                 false: function(){
                     let element = document.getElementById("toggle")
-                    if(element.getAttribute("aria-pressed")){
-                        element.click()
+                    if(element != null){
+                        if(element.getAttribute("aria-pressed")){
+                            element.click()
+                        }
                     }
                 }
             }
