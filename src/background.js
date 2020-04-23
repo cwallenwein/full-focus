@@ -16,35 +16,27 @@ chrome.runtime.onInstalled.addListener(function () {
             youtube: {
                 homepage: {
                     hide: false,
-                    id: "homepage"
                 },
                 comments: {
                     hide: false,
-                    id: "comments"
                 },
                 playlists: {
                     hide: false,
-                    id: "playlist"
                 },
                 recommendations: {
                     hide: false,
-                    id: "related"
                 },
                 merch: {
                     hide: false,
-                    id: "merch"
                 },
                 recommendationsAfterVideo: {
                     hide: false,
-                    id: "recommendationsAfterVideo"
                 },
                 autoplay: {
                     hide: false,
-                    id: "autplay"
                 },
                 chat: {
                     hide: false,
-                    id: "chat"
                 }
             }
         }
