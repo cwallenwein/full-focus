@@ -69,6 +69,10 @@ chrome.tabs.onUpdated.addListener(function(tabId, changeInfo, tab) {
     }
 })
 
+chrome.tabs.onActivated.addListener(function(activeInfo){
+    sendStatus(activeInfo.tabId, undefined)
+})
+
 function updateIcon(showIcon){
     chrome.browserAction.setIcon({path: showIcon + ".png"});
 }
