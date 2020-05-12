@@ -46,7 +46,7 @@ chrome.runtime.onInstalled.addListener(function () {
 function sendStatus(pTabID, pTabURL){
     chrome.storage.sync.get('active', function (response) {
         let message = {
-            type: response.active ? "hideAll" : "showAll",
+            type: response.active ? "enableExtension" : "disableExtension",
             firstTime: true, //this page was just opended for the first time
             source: "background.js",
             url: pTabURL

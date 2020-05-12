@@ -27,7 +27,7 @@ chrome.storage.sync.get('active', function (response) {
             for (tab of tabs) {
                 // if(checkURL(tabs.url))
                 let message = {
-                    type: response.active ? "hideAll" : "showAll",
+                    type: response.active ? "enableExtension" : "disableExtension",
                     source: "popup.js",
                     url: tab.url
                 }
@@ -65,7 +65,7 @@ chrome.storage.sync.get('settings', function (response) {
                 for (tab of tabs) {
                     // if(checkURL(tabs.url))
                     let message = {
-                        type: response.settings.youtube[key].hide ? "hideOne" : "showOne",
+                        type: response.settings.youtube[key].hide ? "hideElement" : "showElement",
                         element: key,
                         source: "popup.js",
                         url: tab.url

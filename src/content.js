@@ -11,17 +11,17 @@ function handleMessage(message, sender, sendResponse) {
     // TODO modify switch-case statement so it doesn't have to change when new functionality is added
     // but before that check if new functionality is even needed
     switch (message.type) {
-        case "hideAll":
-            hideAll();
+        case "enableExtension":
+            enableExtension();
             break;
-        case "showAll":
-            showAll()
+        case "disableExtension":
+            disableExtension()
             break;
-        case "hideOne":
-            hideOne(message.element);
+        case "hideElement":
+            hideElement(message.element);
             break;
-        case "showOne":
-            showOne(message.element);
+        case "showElement":
+            showElement(message.element);
             break;
         default:
             console.log("I don't know this type of message")
@@ -59,7 +59,7 @@ function handleFirstTime(message) {
     }
 }
 
-function showAll() {
+function disableExtension() {
     let website = "youtube"
     let elementsOnWebsite = instructions[website]
     for (let elementName in elementsOnWebsite) {
@@ -74,7 +74,7 @@ function showAll() {
     }
 }
 
-function hideAll() {
+function enableExtension() {
     let website = "youtube"
     let elementsOnWebsite = instructions[website]
 
@@ -95,7 +95,7 @@ function hideAll() {
     })
 }
 
-function showOne(key) {
+function showElement(key) {
     let website = "youtube"
     let element = instructions[website][key]
 
@@ -106,7 +106,7 @@ function showOne(key) {
     }
 }
 
-function hideOne(key) {
+function hideElement(key) {
     let website = "youtube"
     let element = instructions[website][key]
 
