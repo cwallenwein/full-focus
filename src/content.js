@@ -66,7 +66,10 @@ function showAll() {
         let element = elementsOnWebsite[elementName]
 
         if (element.check(location.href)) {
-            element.hide.false()
+            if(element.keepStateOnDisableExtension == false){
+                element.hide.false()
+            }
+            
         }
     }
 }
@@ -244,6 +247,7 @@ const instructions = {
         },
         autoplay: {
             check: checking.watch,
+            keepStateOnDisableExtension: true,
             hide: {
                 true: function(){
                     let element = document.getElementById("toggle")
