@@ -66,7 +66,7 @@ function disableExtension() {
         let element = elementsOnWebsite[elementName]
 
         if (element.check(location.href)) {
-            if(element.keepStateOnDisableExtension == false){
+            if(element.keepStateOnDisableExtension != true){
                 element.hide.false()
             }
             
@@ -252,7 +252,6 @@ const instructions = {
                 true: function(){
                     let element = document.getElementById("toggle")
                     if(element != null){
-                        console.log(element)
                         if(element.getAttribute("aria-pressed")  === "true"){
                             element.click()
                             console.log("disable autoplay")
@@ -262,7 +261,6 @@ const instructions = {
                 false: function(){
                     let element = document.getElementById("toggle")
                     if(element != null){
-                        console.log(element)
                         if(element.getAttribute("aria-pressed") === "false"){
                             element.click()
                             console.log("enable autoplay")

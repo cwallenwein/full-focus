@@ -7,7 +7,8 @@
     "content_scripts": [
         {
             "css": [
-                "style.css"
+                "style.css"//,
+                //"YT_homepage_style.css"
             ],
             "matches": [
                 "https://www.youtube.com/*"
