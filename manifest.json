@@ -6,9 +6,9 @@
   "version": "0.2.1.3",
   "content_scripts": [
     {
-      "css": ["css/style.css"],
       "matches": ["https://www.youtube.com/*"],
-      "js": ["js/content.js"]
+      "js": ["js/content.js"],
+      "css": ["css/style.css"]
     }
   ],
   "background": {
