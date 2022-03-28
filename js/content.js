@@ -30,21 +30,6 @@ function handleMessage(message, sender, sendResponse) {
   return true;
 }
 
-// check which url and which page the user is on
-function getLocation() {
-  for (var domain in instructions) {
-    if (instructions[domain].check(location.href)) {
-      break;
-    }
-  }
-  for (var page in instructions[domain].pages) {
-    if (instructions[domain].pages[page].check(location.href)) {
-      break;
-    }
-  }
-  return [domain, page];
-}
-
 function handleFirstTime(message) {
   if (message.firstTime) {
     for (let element in instructions) {
