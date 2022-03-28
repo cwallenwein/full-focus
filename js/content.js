@@ -4,7 +4,7 @@
 chrome.runtime.onMessage.addListener(handleMessage);
 
 function handleMessage(message, sender, sendResponse) {
-  console.log(message);
+  console.log("handle incoming message", message);
 
   handleFirstTime(message);
 
@@ -33,9 +33,9 @@ function handleMessage(message, sender, sendResponse) {
 function handleFirstTime(message) {
   if (message.firstTime) {
     for (let element in instructions) {
-      if (elementsOnWebsite[element].check(location.href)) {
-        if (elementsOnWebsite[element].firstTime != undefined) {
-          elementsOnWebsite[element].firstTime();
+      if (instructions[element].check(location.href)) {
+        if (instructions[element].firstTime != undefined) {
+          instructions[element].firstTime();
         }
       }
     }
@@ -44,7 +44,7 @@ function handleFirstTime(message) {
 
 function disableExtension() {
   for (let elementName in instructions) {
-    let element = elementsOnWebsite[elementName];
+    let element = instructions[elementName];
 
     if (element.check(location.href)) {
       if (element.keepStateOnDisableExtension != true) {
