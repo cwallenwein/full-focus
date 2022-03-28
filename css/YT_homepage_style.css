@@ -1,20 +1,23 @@
 /* Block scrollbar (and scrolling) */
-body{
-    overflow: hidden;
+body {
+  overflow: hidden;
 }
 
 /* Hide thumbnails */
-#thumbnail{
-    visibility: hidden;
+#thumbnail {
+  visibility: hidden;
 }
 
 /* Hide channel icons */
-#img{
-    visibility: hidden;
+#img {
+  visibility: hidden;
 }
 
 /* Blur text */
-#video-title, #text a, #metadata-line, #img .title{
-    color: transparent;
-    text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+#video-title,
+#text a,
+#metadata-line,
+#img .title {
+  color: transparent;
+  text-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
 }

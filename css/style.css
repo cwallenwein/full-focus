@@ -1,48 +1,48 @@
-#ext_background{
-    height: 100vh;
-    width: 100vw;
-    margin: none;
-    background: white;
-    position: fixed;
+#ext_background {
+  height: 100vh;
+  width: 100vw;
+  margin: none;
+  background: white;
+  position: fixed;
 }
 
-#ext_form{
-    position: fixed;
-    width: 100vw;
-    height: 100vh;
+#ext_form {
+  position: fixed;
+  width: 100vw;
+  height: 100vh;
 }
 
-#ext_searchBar{
-    width: calc(68vw - 2px);
-    height: calc(10vh - 2px);
-    top: 45vh;
-    left: calc(15vw - 6vh - 1px);
-    position: absolute;
-    padding: 1vh 1vw;
-    
-    font-size: 8vh;
-    
-    border: 1px solid black;
+#ext_searchBar {
+  width: calc(68vw - 2px);
+  height: calc(10vh - 2px);
+  top: 45vh;
+  left: calc(15vw - 6vh - 1px);
+  position: absolute;
+  padding: 1vh 1vw;
+
+  font-size: 8vh;
+
+  border: 1px solid black;
 }
 
-#ext_submitButton{
-    width: calc(12vh - 2px);    
-    height: calc(12vh - 2px);
-    top: 45vh;
-    left: calc(85vw - 6vh - 1px);
-    position: absolute;
-    display: table-cell;
+#ext_submitButton {
+  width: calc(12vh - 2px);
+  height: calc(12vh - 2px);
+  top: 45vh;
+  left: calc(85vw - 6vh - 1px);
+  position: absolute;
+  display: table-cell;
 
-    font-size: 6vh;
-    text-align: center;
-    vertical-align: middle;
-    line-height: calc(12vh - 2px);
+  font-size: 6vh;
+  text-align: center;
+  vertical-align: middle;
+  line-height: calc(12vh - 2px);
 
-    border-style: solid;
-    border-color: black;
-    border-width: 1px 1px 1px 0
+  border-style: solid;
+  border-color: black;
+  border-width: 1px 1px 1px 0;
 }
 
-#ext_submitButton:hover{
-    background-color:rgba(200, 200, 200, 0.2);
+#ext_submitButton:hover {
+  background-color: rgba(200, 200, 200, 0.2);
 }

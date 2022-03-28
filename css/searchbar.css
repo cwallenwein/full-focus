@@ -1,34 +1,39 @@
 /* disable scrolling */
-html, body {margin: 0; height: 100%; overflow: hidden}
+html,
+body {
+  margin: 0;
+  height: 100%;
+  overflow: hidden;
+}
 
 /* Element on every YT page that can be expanded to hide the background */
 #ticker {
-    width: 100vw;
-    height: 100vh;
-    background: white;
+  width: 100vw;
+  height: 100vh;
+  background: white;
 }
 
 /* YT menu on the side */
-#items{
-    display: none !important;
+#items {
+  display: none !important;
 }
 
 /* autocorrect to foreground */
-.gstl_50.sbdd_a{
-    z-index: 3001;
+.gstl_50.sbdd_a {
+  z-index: 3001;
 }
 
-#search-form{
-    position: absolute;
+#search-form {
+  position: absolute;
 
-    width: 70vw !important;
-    max-width: 70vw !important;
-    height: 10vh;
+  width: 70vw !important;
+  max-width: 70vw !important;
+  height: 10vh;
 
-    top: 45vh;
-    left: 15vw;
+  top: 45vh;
+  left: 15vw;
 }
 
-#search{
-    font-size: 6vh !important;
+#search {
+  font-size: 6vh !important;
 }
