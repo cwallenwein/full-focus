@@ -74,5 +74,5 @@ chrome.tabs.onActivated.addListener(function(activeInfo){
 })
 
 function updateIcon(showIcon){
-    chrome.browserAction.setIcon({path: showIcon + ".png"});
+    chrome.browserAction.setIcon({path: "../img/" + showIcon + ".png"});
 }

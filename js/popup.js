@@ -15,7 +15,7 @@ chrome.storage.sync.get('active', function (response) {
         response.active = !response.active
 
         // update icon
-        chrome.browserAction.setIcon({ path: response.active + ".png" });
+        chrome.browserAction.setIcon({ path: "../img/" + response.active + ".png" });
 
         // update setting in storage
         chrome.storage.sync.set({ active: response.active })

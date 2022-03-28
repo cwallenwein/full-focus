@@ -7,20 +7,19 @@
     "content_scripts": [
         {
             "css": [
-                "style.css"//,
-                //"YT_homepage_style.css"
+                "css/style.css"
             ],
             "matches": [
                 "https://www.youtube.com/*"
             ],
             "js": [
-                "content.js"
+                "js/content.js"
             ]
         }
     ],
     "background": {
         "scripts": [
-            "background.js"
+            "js/background.js"
         ],
         "persistent": false
     },
@@ -29,15 +28,15 @@
         "tabs"
     ],
     "browser_action": {
-        "default_icon": "true.png",
-        "default_popup": "popup.html",
+        "default_icon": "img/true.png",
+        "default_popup": "html/popup.html",
         "default_title": "Click here to open the popup"
     },
     "web_accessible_resources": [
-        "show.css",
-        "searchbar.css"
+        "css/show.css",
+        "css/searchbar.css"
     ],
     "icons": {
-        "128": "icon.png"
+        "128": "img/icon.png"
     }
 }
