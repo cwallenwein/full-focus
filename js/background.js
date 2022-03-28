@@ -12,31 +12,29 @@ chrome.runtime.onInstalled.addListener(function () {
 
   chrome.storage.sync.set({
     settings: {
-      youtube: {
-        homepage: {
-          hide: false,
-        },
-        comments: {
-          hide: false,
-        },
-        playlists: {
-          hide: false,
-        },
-        recommendations: {
-          hide: false,
-        },
-        merch: {
-          hide: false,
-        },
-        recommendationsAfterVideo: {
-          hide: false,
-        },
-        autoplay: {
-          hide: false,
-        },
-        chat: {
-          hide: false,
-        },
+      homepage: {
+        hide: false,
+      },
+      comments: {
+        hide: false,
+      },
+      playlists: {
+        hide: false,
+      },
+      recommendations: {
+        hide: false,
+      },
+      merch: {
+        hide: false,
+      },
+      recommendationsAfterVideo: {
+        hide: false,
+      },
+      autoplay: {
+        hide: false,
+      },
+      chat: {
+        hide: false,
       },
     },
   });

@@ -43,16 +43,16 @@ chrome.storage.sync.get("active", function (response) {
 // and update settings when necessary
 chrome.storage.sync.get("settings", function (response) {
   // code for YouTube
-  for (let key in response.settings.youtube) {
+  for (let key in response.settings) {
     var current = document.getElementById(key);
 
     // check or uncheck checkboxes based on settings
-    current.checked = response.settings.youtube[key].hide;
+    current.checked = response.settings[key].hide;
 
     // add EventListener that updates the settings
     current.addEventListener("click", function () {
       // toggle settings
-      response.settings.youtube[key].hide = !response.settings.youtube[key].hide;
+      response.settings[key].hide = !response.settings[key].hide;
 
       // update setting in storage
       chrome.storage.sync.set({ settings: response.settings });
@@ -64,7 +64,7 @@ chrome.storage.sync.get("settings", function (response) {
         for (tab of tabs) {
           // if(checkURL(tabs.url))
           let message = {
-            type: response.settings.youtube[key].hide ? "hideElement" : "showElement",
+            type: response.settings[key].hide ? "hideElement" : "showElement",
             element: key,
             source: "popup.js",
             url: tab.url,

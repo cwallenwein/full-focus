@@ -47,9 +47,7 @@ function getLocation() {
 
 function handleFirstTime(message) {
   if (message.firstTime) {
-    let website = "youtube";
-    let elementsOnWebsite = instructions[website];
-    for (let element in elementsOnWebsite) {
+    for (let element in instructions) {
       if (elementsOnWebsite[element].check(location.href)) {
         if (elementsOnWebsite[element].firstTime != undefined) {
           elementsOnWebsite[element].firstTime();
@@ -60,9 +58,7 @@ function handleFirstTime(message) {
 }
 
 function disableExtension() {
-  let website = "youtube";
-  let elementsOnWebsite = instructions[website];
-  for (let elementName in elementsOnWebsite) {
+  for (let elementName in instructions) {
     let element = elementsOnWebsite[elementName];
 
     if (element.check(location.href)) {
@@ -74,13 +70,10 @@ function disableExtension() {
 }
 
 function enableExtension() {
-  let website = "youtube";
-  let elementsOnWebsite = instructions[website];
-
   chrome.storage.sync.get("settings", function (response) {
-    for (let elementName in elementsOnWebsite) {
-      let element = elementsOnWebsite[elementName];
-      let setting = response.settings[website][elementName].hide;
+    for (let elementName in instructions) {
+      let element = instructions[elementName];
+      let setting = response.settings[elementName].hide;
 
       if (element.check(location.href)) {
         element.hide[setting]();
@@ -94,8 +87,7 @@ function enableExtension() {
 }
 
 function showElement(key) {
-  let website = "youtube";
-  let element = instructions[website][key];
+  let element = instructions[key];
 
   if (element != undefined) {
     if (element.check(location.href)) {
@@ -105,8 +97,7 @@ function showElement(key) {
 }
 
 function hideElement(key) {
-  let website = "youtube";
-  let element = instructions[website][key];
+  let element = instructions[key];
 
   chrome.storage.sync.get("active", function (response) {
     if (response.active && element != undefined) {
@@ -124,159 +115,157 @@ const checking = {
 };
 
 const instructions = {
-  youtube: {
-    homepage: {
-      check: checking.homepage,
-      hide: {
-        true: function () {
-          let element = document.getElementById("stylesheetSearchbar");
-          if (element != null) {
-            element.disabled = false;
-          }
-        },
-        false: function () {
-          let element = document.getElementById("stylesheetSearchbar");
-          if (element != null) {
-            element.disabled = true;
-          }
-        },
+  homepage: {
+    check: checking.homepage,
+    hide: {
+      true: function () {
+        let element = document.getElementById("stylesheetSearchbar");
+        if (element != null) {
+          element.disabled = false;
+        }
       },
-      firstTime: function () {
-        console.log("add searchbar.css");
-        var url = chrome.runtime.getURL("css/searchbar.css");
-        var link = document.createElement("link");
-        link.id = "stylesheetSearchbar";
-        link.type = "text/css";
-        link.rel = "stylesheet";
-        link.href = url;
-        link.disabled = true;
-        document.head.appendChild(link);
+      false: function () {
+        let element = document.getElementById("stylesheetSearchbar");
+        if (element != null) {
+          element.disabled = true;
+        }
       },
-      disableWhenNotOnPage: true,
     },
-    comments: {
-      check: checking.watch,
-      hide: {
-        true: function () {
-          let element = document.getElementById("comments");
+    firstTime: function () {
+      console.log("add searchbar.css");
+      var url = chrome.runtime.getURL("css/searchbar.css");
+      var link = document.createElement("link");
+      link.id = "stylesheetSearchbar";
+      link.type = "text/css";
+      link.rel = "stylesheet";
+      link.href = url;
+      link.disabled = true;
+      document.head.appendChild(link);
+    },
+    disableWhenNotOnPage: true,
+  },
+  comments: {
+    check: checking.watch,
+    hide: {
+      true: function () {
+        let element = document.getElementById("comments");
+        element.style.display = "none";
+        console.log("no comments");
+      },
+      false: function () {
+        let element = document.getElementById("comments");
+        element.style.display = "block";
+        console.log("show comments");
+      },
+    },
+  },
+  playlists: {
+    check: checking.watch,
+    hide: {
+      true: function () {
+        let element = document.getElementById("playlist");
+        element.style.display = "none";
+        console.log("no playlists 1");
+      },
+      false: function () {
+        // only set to flex if there should even be a playlist on that page
+        let element = document.getElementById("playlist");
+        if (element.hasAttribute("disable-upgrade") === false) {
+          element.style.display = "flex";
+          console.log("show playlists");
+        } else {
           element.style.display = "none";
-          console.log("no comments");
-        },
-        false: function () {
-          let element = document.getElementById("comments");
-          element.style.display = "block";
-          console.log("show comments");
-        },
+          console.log("no playlists 2");
+        }
       },
     },
-    playlists: {
-      check: checking.watch,
-      hide: {
-        true: function () {
-          let element = document.getElementById("playlist");
+  },
+  recommendations: {
+    check: checking.watch,
+    // when recommendations are hidden the button for autoplay is also hidden
+    // but it is still possible to click() the button
+    hide: {
+      true: function () {
+        let element = document.getElementById("related");
+        element.style.display = "none";
+        console.log("no recommendations");
+      },
+      false: function () {
+        let element = document.getElementById("related");
+        element.style.display = "block";
+        console.log("show recommendations");
+      },
+    },
+  },
+  merch: {
+    check: checking.watch,
+    hide: {
+      true: function () {
+        let element = document.getElementById("merch-shelf");
+        element.style.display = "none";
+        console.log("no merch");
+      },
+      false: function () {
+        let element = document.getElementById("merch-shelf");
+        element.style.display = "block";
+        console.log("show merch");
+      },
+    },
+  },
+  recommendationsAfterVideo: {
+    check: checking.watch,
+    // TODO why is this returning undefined (sometimes)
+    hide: {
+      true: function () {
+        let element = document.getElementsByClassName("ytp-endscreen-content")[0];
+        element.style.display = "none";
+        console.log("no recommendations after video");
+      },
+      false: function () {
+        let element = document.getElementsByClassName("ytp-endscreen-content")[0];
+        element.style.display = "block";
+        console.log("show recommendations after video");
+      },
+    },
+  },
+  autoplay: {
+    check: checking.watch,
+    keepStateOnDisableExtension: true,
+    hide: {
+      true: function () {
+        let element = document.getElementById("toggle");
+        if (element != null) {
+          if (element.getAttribute("aria-pressed") === "true") {
+            element.click();
+            console.log("disable autoplay");
+          }
+        }
+      },
+      false: function () {
+        let element = document.getElementById("toggle");
+        if (element != null) {
+          if (element.getAttribute("aria-pressed") === "false") {
+            element.click();
+            console.log("enable autoplay");
+          }
+        }
+      },
+    },
+  },
+  chat: {
+    check: checking.watch,
+    hide: {
+      true: function () {
+        let element = document.getElementById("chat");
+        if (element != null) {
           element.style.display = "none";
-          console.log("no playlists 1");
-        },
-        false: function () {
-          // only set to flex if there should even be a playlist on that page
-          let element = document.getElementById("playlist");
-          if (element.hasAttribute("disable-upgrade") === false) {
-            element.style.display = "flex";
-            console.log("show playlists");
-          } else {
-            element.style.display = "none";
-            console.log("no playlists 2");
-          }
-        },
+        }
       },
-    },
-    recommendations: {
-      check: checking.watch,
-      // when recommendations are hidden the button for autoplay is also hidden
-      // but it is still possible to click() the button
-      hide: {
-        true: function () {
-          let element = document.getElementById("related");
-          element.style.display = "none";
-          console.log("no recommendations");
-        },
-        false: function () {
-          let element = document.getElementById("related");
-          element.style.display = "block";
-          console.log("show recommendations");
-        },
-      },
-    },
-    merch: {
-      check: checking.watch,
-      hide: {
-        true: function () {
-          let element = document.getElementById("merch-shelf");
-          element.style.display = "none";
-          console.log("no merch");
-        },
-        false: function () {
-          let element = document.getElementById("merch-shelf");
-          element.style.display = "block";
-          console.log("show merch");
-        },
-      },
-    },
-    recommendationsAfterVideo: {
-      check: checking.watch,
-      // TODO why is this returning undefined (sometimes)
-      hide: {
-        true: function () {
-          let element = document.getElementsByClassName("ytp-endscreen-content")[0];
-          element.style.display = "none";
-          console.log("no recommendations after video");
-        },
-        false: function () {
-          let element = document.getElementsByClassName("ytp-endscreen-content")[0];
-          element.style.display = "block";
-          console.log("show recommendations after video");
-        },
-      },
-    },
-    autoplay: {
-      check: checking.watch,
-      keepStateOnDisableExtension: true,
-      hide: {
-        true: function () {
-          let element = document.getElementById("toggle");
-          if (element != null) {
-            if (element.getAttribute("aria-pressed") === "true") {
-              element.click();
-              console.log("disable autoplay");
-            }
-          }
-        },
-        false: function () {
-          let element = document.getElementById("toggle");
-          if (element != null) {
-            if (element.getAttribute("aria-pressed") === "false") {
-              element.click();
-              console.log("enable autoplay");
-            }
-          }
-        },
-      },
-    },
-    chat: {
-      check: checking.watch,
-      hide: {
-        true: function () {
-          let element = document.getElementById("chat");
-          if (element != null) {
-            element.style.display = "none";
-          }
-        },
-        false: function () {
-          let element = document.getElementById("chat");
-          if (element != null) {
-            element.style.display = "flex";
-          }
-        },
+      false: function () {
+        let element = document.getElementById("chat");
+        if (element != null) {
+          element.style.display = "flex";
+        }
       },
     },
   },
