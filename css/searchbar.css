@@ -6,34 +6,24 @@ body {
   overflow: hidden;
 }
 
-/* Element on every YT page that can be expanded to hide the background */
-#ticker {
-  width: 100vw;
-  height: 100vh;
-  background: white;
-}
-
-/* YT menu on the side */
-#items {
+#start,
+#guide,
+#chips-wrapper,
+#contents,
+#masthead-ad {
   display: none !important;
 }
 
-/* autocorrect to foreground */
-.gstl_50.sbdd_a {
-  z-index: 3001;
-}
-
-#search-form {
+#center {
   position: absolute;
-
-  width: 70vw !important;
-  max-width: 70vw !important;
-  height: 10vh;
-
   top: 45vh;
   left: 15vw;
+  width: 70vw !important;
+  height: 10vh;
 }
 
-#search {
-  font-size: 6vh !important;
+#end {
+  position: absolute;
+  top: 8px;
+  right: 0px;
 }
