@@ -1,5 +1,12 @@
 "use strict";
 
+/**
+ * Events that can trigger showing/hiding elments:
+ * - plugin popup was clicked (handled in popup script)
+ * - website url was changed (handled in background script)
+ * - page was reloaded (handled in background script)
+ */
+
 console.log("background running");
 
 // TODO not all elements are about hiding and showing stuff, for example enabling autoplay. Maybe find another name
@@ -24,18 +31,20 @@ chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
   }
 });
 
-function requestUpdateForTab(pTabID, pTabURL) {
-  chrome.storage.sync.get("active", function (response) {
-    let message = {
-      type: response.active ? "enableExtension" : "disableExtension",
-      //firstTime: true, //this page was just opended for the first time
-      source: "background.js",
-      url: pTabURL,
-    };
-    console.log("send message to a certain tab", message);
-    updateIcon(response.active);
-    chrome.tabs.sendMessage(pTabID, message);
-  });
+function requestUpdateForTab(tabId, tabUrl) {
+  if (tabUrl.startsWith("https://www.youtube.com/")) {
+    chrome.storage.sync.get("active", function (response) {
+      let message = {
+        type: response.active ? "enableExtension" : "disableExtension",
+        //firstTime: true, //this page was just opended for the first time
+        source: "background.js",
+        url: tabUrl,
+      };
+      console.log("send message to a certain tab", message);
+      updateIcon(response.active);
+      chrome.tabs.sendMessage(tabId, message);
+    });
+  }
 }
 
 function updateIcon(showIcon) {
