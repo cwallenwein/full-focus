@@ -11,17 +11,17 @@ chrome.tabs.onCreated.addListener(function (tab) {
   requestUpdateForTab(tab.id, tab.url);
 });
 
+// send message to content-script when the active tab is changed
+chrome.tabs.onActivated.addListener(function (activeInfo) {
+  requestUpdateForTab(activeInfo.tabId, undefined);
+});
+
 // send message to content-script when the tab is updated
 chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
   const finishedUpdatingPage = changeInfo.status === "complete";
   if (finishedUpdatingPage) {
     requestUpdateForTab(tabId, tab.url);
   }
-});
-
-// send message to content-script when the active tab is changed
-chrome.tabs.onActivated.addListener(function (activeInfo) {
-  requestUpdateForTab(activeInfo.tabId, undefined);
 });
 
 function requestUpdateForTab(pTabID, pTabURL) {
