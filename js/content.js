@@ -1,158 +1,123 @@
 "use strict";
 // TODO also fix tabs in the background when settings were changed
 
-chrome.runtime.onMessage.addListener(handleMessage);
+chrome.runtime.onMessage.addListener(handleUpdateStateRequest);
 
-function handleMessage(message, sender, sendResponse) {
-  console.log("handle incoming message", message);
+// does the content script receive updates even if it is not active at the moment? No, the popup for example only sends a message to all active tabs
+// -> The popup sends to all tabs (not that scalable, all open tabs will be affected at the same time)
+//    or
+//    When active tab is changed, the newly active tab requests settings
+//      (more scalable because this is only executed on active tabs; then background script and popup only send a message that the settings were updated to the content script, but doesn't send the settings themselves)
+//    or
+//    The popup sends entire state to all active tabs and newly active tab requests setting
 
-  handleFirstTime(message);
+// update request contains the entire state and is used to update the content
+// but how to check if the CSS has to be injected into the header or not? Was it already injected earlier? This could be part of the state :thinkingface; but this sounds more like a message
+// a message that was sent to the content script is immediately processed and is not persistent
+// so we can add a key to the state object to indicate that this was the first message that was sent to a certain url. We could also just inject the CSS if it was not already injected :thinkingface
 
-  // TODO modify switch-case statement so it doesn't have to change when new functionality is added
+// TODO How to prevent that the css is injected into a non-Youtube header?
+
+function handleUpdateStateRequest(newState, sender, sendResponse) {
+  console.log("handle incoming state update request", newState);
+
+  // inject CSS
+  //
+
   // but before that check if new functionality is even needed
-  switch (message.type) {
-    case "enableExtension":
-      enableExtension();
-      break;
-    case "disableExtension":
-      disableExtension();
-      break;
-    case "hideElement":
-      hideElement(message.element);
-      break;
-    case "showElement":
-      showElement(message.element);
-      break;
-    default:
-      console.log("I don't know this type of message");
+  if ((updateRequest.element = "extension")) {
+    activateExtension(updateRequest.active);
+  } else {
+    activateElement(updateRequest.element, updateRequest.active);
   }
-
-  return true;
 }
 
-function handleFirstTime(message) {
-  if (message.firstTime) {
-    for (let element in instructions) {
-      if (instructions[element].check(location.href)) {
-        if (instructions[element].firstTime != undefined) {
-          instructions[element].firstTime();
-        }
+function activateExtension(extensionActivated) {
+  if (extensionActivated) {
+    chrome.storage.sync.get("elements", function ({ elements }) {
+      const url = location.href;
+      console.log("instructions: ", instructions);
+      console.log("response in enable Extension", elements);
+      for (let elementName in instructions) {
+        let hideElement = instructions[elementName];
+        let setting = elements[elementName].hide;
+        console.log("setting", elementName, setting);
+        console.log("url", url);
+        hideElement(url, setting);
       }
-    }
-  }
-}
-
-function disableExtension() {
-  for (let elementName in instructions) {
-    let element = instructions[elementName];
-
-    if (element.check(location.href)) {
-      if (element.keepStateOnDisableExtension != true) {
-        element.hide.false();
-      }
-    }
-  }
-}
-
-function enableExtension() {
-  chrome.storage.sync.get("settings", function (response) {
+    });
+  } else {
     for (let elementName in instructions) {
-      let element = instructions[elementName];
-      let setting = response.settings[elementName].hide;
-
-      if (element.check(location.href)) {
-        element.hide[setting]();
-      } else if (element.disableWhenNotOnPage != undefined) {
-        if (element.disableWhenNotOnPage == true) {
-          element.hide.false();
-        }
-      }
-    }
-  });
-}
-
-function showElement(key) {
-  let element = instructions[key];
-
-  if (element != undefined) {
-    if (element.check(location.href)) {
-      element.hide.false();
+      let hideElement = instructions[elementName];
+      hideElement(location.href, false);
     }
   }
 }
 
-function hideElement(key) {
-  let element = instructions[key];
+function activateElement(elementActivated) {
+  const url = location.href;
 
-  chrome.storage.sync.get("active", function (response) {
-    if (response.active && element != undefined) {
-      if (element.check(location.href)) {
-        element.hide.true();
-      }
+  if (elementActivated) {
+    let hideElement = instructions[key];
+    if (hideElement != undefined) {
+      hideElement(url, false);
     }
-  });
+  } else {
+    console.log("Hide", key, "on", url);
+    let hideElement = instructions[key];
+    chrome.storage.sync.get("extension", function ({ extension }) {
+      if (extension.active && hideElement != undefined) {
+        hideElement(url, true);
+      }
+    });
+  }
 }
 
-const checking = {
-  general: (url) => url.startsWith("https://www.youtube.com/"),
-  homepage: (url) => url == "https://www.youtube.com/" || url.startsWith("https://www.youtube.com/#"),
-  watch: (url) => url.startsWith("https://www.youtube.com/watch"),
-};
+function isUrlHomepage(url) {
+  return url == "https://www.youtube.com/" || url.startsWith("https://www.youtube.com/#");
+}
+
+function isUrlVideoPlayer(url) {
+  return url.startsWith("https://www.youtube.com/watch");
+}
 
 const instructions = {
-  homepage: {
-    check: checking.homepage,
-    hide: {
-      true: function () {
+  homepage: function (url, hide) {
+    if (isUrlHomepage(url)) {
+      if (hide) {
         let element = document.getElementById("stylesheetSearchbar");
         if (element != null) {
           element.disabled = false;
         }
-      },
-      false: function () {
+      } else {
         let element = document.getElementById("stylesheetSearchbar");
         if (element != null) {
           element.disabled = true;
         }
-      },
-    },
-    firstTime: function () {
-      console.log("add searchbar.css");
-      var url = chrome.runtime.getURL("css/searchbar.css");
-      var link = document.createElement("link");
-      link.id = "stylesheetSearchbar";
-      link.type = "text/css";
-      link.rel = "stylesheet";
-      link.href = url;
-      link.disabled = true;
-      document.head.appendChild(link);
-    },
-    disableWhenNotOnPage: true,
+      }
+    }
   },
-  comments: {
-    check: checking.watch,
-    hide: {
-      true: function () {
+  comments: function (url, hide) {
+    if (isUrlVideoPlayer(url)) {
+      if (hide) {
         let element = document.getElementById("comments");
+        console.log("comments", element);
         element.style.display = "none";
         console.log("no comments");
-      },
-      false: function () {
+      } else {
         let element = document.getElementById("comments");
         element.style.display = "block";
         console.log("show comments");
-      },
-    },
+      }
+    }
   },
-  playlists: {
-    check: checking.watch,
-    hide: {
-      true: function () {
+  playlists: function (url, hide) {
+    if (isUrlVideoPlayer(url)) {
+      if (hide) {
         let element = document.getElementById("playlist");
         element.style.display = "none";
         console.log("no playlists 1");
-      },
-      false: function () {
+      } else {
         // only set to flex if there should even be a playlist on that page
         let element = document.getElementById("playlist");
         if (element.hasAttribute("disable-upgrade") === false) {
@@ -162,62 +127,53 @@ const instructions = {
           element.style.display = "none";
           console.log("no playlists 2");
         }
-      },
-    },
+      }
+    }
   },
-  recommendations: {
-    check: checking.watch,
-    // when recommendations are hidden the button for autoplay is also hidden
-    // but it is still possible to click() the button
-    hide: {
-      true: function () {
+  // when recommendations are hidden the button for autoplay is also hidden
+  // but it is still possible to click() the button
+  recommendations: function (url, hide) {
+    if (isUrlVideoPlayer(url)) {
+      if (hide) {
         let element = document.getElementById("related");
         element.style.display = "none";
         console.log("no recommendations");
-      },
-      false: function () {
+      } else {
         let element = document.getElementById("related");
         element.style.display = "block";
         console.log("show recommendations");
-      },
-    },
+      }
+    }
   },
-  merch: {
-    check: checking.watch,
-    hide: {
-      true: function () {
+  merch: function (url, hide) {
+    if (isUrlVideoPlayer(url)) {
+      if (hide) {
         let element = document.getElementById("merch-shelf");
         element.style.display = "none";
         console.log("no merch");
-      },
-      false: function () {
+      } else {
         let element = document.getElementById("merch-shelf");
         element.style.display = "block";
         console.log("show merch");
-      },
-    },
+      }
+    }
   },
-  recommendationsAfterVideo: {
-    check: checking.watch,
-    // TODO why is this returning undefined (sometimes)
-    hide: {
-      true: function () {
+  recommendationsAfterVideo: function (url, hide) {
+    if (isUrlVideoPlayer(url)) {
+      if (hide) {
         let element = document.getElementsByClassName("ytp-endscreen-content")[0];
         element.style.display = "none";
         console.log("no recommendations after video");
-      },
-      false: function () {
+      } else {
         let element = document.getElementsByClassName("ytp-endscreen-content")[0];
         element.style.display = "block";
         console.log("show recommendations after video");
-      },
-    },
+      }
+    }
   },
-  autoplay: {
-    check: checking.watch,
-    keepStateOnDisableExtension: true,
-    hide: {
-      true: function () {
+  autoplay: function (url, hide) {
+    if (isUrlVideoPlayer(url)) {
+      if (hide) {
         let element = document.getElementById("toggle");
         if (element != null) {
           if (element.getAttribute("aria-pressed") === "true") {
@@ -225,8 +181,7 @@ const instructions = {
             console.log("disable autoplay");
           }
         }
-      },
-      false: function () {
+      } else {
         let element = document.getElementById("toggle");
         if (element != null) {
           if (element.getAttribute("aria-pressed") === "false") {
@@ -234,24 +189,22 @@ const instructions = {
             console.log("enable autoplay");
           }
         }
-      },
-    },
+      }
+    }
   },
-  chat: {
-    check: checking.watch,
-    hide: {
-      true: function () {
+  chat: function (url, hide) {
+    if (isUrlVideoPlayer(url)) {
+      if (hide) {
         let element = document.getElementById("chat");
         if (element != null) {
           element.style.display = "none";
         }
-      },
-      false: function () {
+      } else {
         let element = document.getElementById("chat");
         if (element != null) {
           element.style.display = "flex";
         }
-      },
-    },
+      }
+    }
   },
 };

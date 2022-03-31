@@ -21,7 +21,6 @@
     "default_popup": "html/popup.html",
     "default_title": "Click here to open the popup"
   },
-  "web_accessible_resources": ["css/show.css", "css/searchbar.css"],
   "icons": {
     "128": "img/icon.png"
   }
