@@ -7,7 +7,7 @@
   "icons": {
     "128": "img/icon.png"
   },
-  "permissions": ["tabs", "storage"],
+  "permissions": ["storage", "tabs"],
   "background": {
     "service_worker": "js/worker.js"
   },
