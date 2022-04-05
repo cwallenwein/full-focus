@@ -1,0 +1,13 @@
+{
+  "compilerOptions": {
+    "strict": true,
+    "module": "commonjs",
+    "target": "es2020",
+    "esModuleInterop": true,
+    "rootDir": "ts",
+    "outDir": "js",
+    "noEmitOnError": true,
+    "typeRoots": ["node_modules/@types"],
+    "types": ["chrome"]
+  }
+}

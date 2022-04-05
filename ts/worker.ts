@@ -1,16 +1,20 @@
+//import chrome from "chrome";
+
 chrome.runtime.onInstalled.addListener(initializeState);
 
-chrome.tabs.onCreated.addListener(function (tab) {
-  if (tab.url.startsWith("https://www.youtube.com/")) {
+chrome.tabs.onCreated.addListener(function (tab: chrome.tabs.Tab) {
+  if (tab.id && tab.url && tab.url.startsWith("https://www.youtube.com/")) {
     sendCurrentStateToTab(tab.id);
-  } else {
-    chrome.action.disable(tab.id);
   }
 });
 
-chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab) {
+chrome.tabs.onUpdated.addListener(function (
+  tabId: number,
+  changeInfo: chrome.tabs.TabChangeInfo,
+  tab: chrome.tabs.Tab,
+) {
   const finishedUpdatingPage = changeInfo.status === "complete";
-  if (finishedUpdatingPage) {
+  if (finishedUpdatingPage && tab.url) {
     if (tab.url.startsWith("https://www.youtube.com/")) {
       sendCurrentStateToTab(tabId);
     }
@@ -26,7 +30,7 @@ function initializeState() {
   chrome.storage.sync.set(state);
 }
 
-function sendCurrentStateToTab(id) {
+function sendCurrentStateToTab(id: number) {
   chrome.storage.sync.get(null, function (state) {
     chrome.tabs.sendMessage(id, state);
   });

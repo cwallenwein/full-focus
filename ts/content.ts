@@ -6,7 +6,7 @@ injectCss();
 
 chrome.runtime.onMessage.addListener(handleStateUpdate);
 
-function handleStateUpdate(state, sender, sendResponse) {
+function handleStateUpdate(state: any, sender: chrome.runtime.MessageSender, sendResponse: (response?: any) => void) {
   toggleCss(state);
   sendResponse(true);
 }
@@ -18,10 +18,10 @@ function injectCss() {
   }
 }
 
-function toggleCss(state) {
+function toggleCss(state: any) {
   for (const stylesheet of document.styleSheets) {
-    if (Object.keys(state).includes(stylesheet.title)) {
-      stylesheet.disabled = !state[stylesheet.title];
+    if (Object.keys(state).includes(stylesheet.title || "")) {
+      stylesheet.disabled = !state[stylesheet.title || ""];
     }
   }
 }
