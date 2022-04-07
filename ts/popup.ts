@@ -1,21 +1,25 @@
 document.addEventListener("DOMContentLoaded", function () {
-  let activate_extension_checkbox: HTMLInputElement | null = <HTMLInputElement>(
-    document.getElementById("activate_extension")
-  );
-  if (activate_extension_checkbox) {
-    activate_extension_checkbox.addEventListener(
-      "click",
-      () => activate_extension_checkbox && sendStateUpdateToAllTabs(activate_extension_checkbox),
-    );
-  }
+  const options = Array.from(document.getElementsByTagName("input"));
+
+  chrome.storage.sync.get(null, function (state) {
+    console.log("state", state);
+    options.forEach((option: HTMLInputElement) => {
+      option.addEventListener("click", () => sendStateUpdateToAllTabs(options));
+      option.checked = state[option.id];
+    });
+  });
 });
 
-function sendStateUpdateToAllTabs(checkbox: HTMLInputElement) {
+function sendStateUpdateToAllTabs(options: HTMLInputElement[]) {
+  const state: any = {};
+  options.forEach((option) => {
+    state[option.id] = option.checked;
+  });
+
+  chrome.storage.sync.set(state);
+
   chrome.tabs.query({ url: "https://www.youtube.com/*" }, function (tabs) {
     tabs.forEach((tab: chrome.tabs.Tab) => {
-      const state = {
-        extension_active: checkbox?.checked || false,
-      };
       tab.id ? chrome.tabs.sendMessage(tab.id, state) : undefined;
     });
   });

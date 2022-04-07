@@ -1,5 +1,3 @@
-//import chrome from "chrome";
-
 chrome.runtime.onInstalled.addListener(initializeState);
 
 chrome.tabs.onCreated.addListener(function (tab: chrome.tabs.Tab) {
@@ -24,8 +22,16 @@ chrome.tabs.onUpdated.addListener(function (
 function initializeState() {
   // TODO: remove this before uploading extension
   chrome.storage.sync.clear();
+
   const state = {
-    extension_active: true,
+    hide_recommendations: false,
+    hide_thumbnails: true,
+    hide_playlists: false,
+    disable_autoplay: false,
+    hide_sidebar: false,
+    hide_comments: false,
+    hide_merch: false,
+    hide_shorts: false,
   };
   chrome.storage.sync.set(state);
 }

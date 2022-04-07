@@ -1,9 +1,9 @@
 {
   "compilerOptions": {
     "strict": true,
-    "module": "commonjs",
-    "target": "es2020",
-    "esModuleInterop": true,
+    "target": "es2017",
+    "esModuleInterop": false,
+    "sourceMap": false,
     "rootDir": "ts",
     "outDir": "js",
     "noEmitOnError": true,
