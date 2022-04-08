@@ -49,9 +49,13 @@ body.hide_playlists #playlist {
 }
 
 /* --- hide_sidebar --- */
-body.hide_sidebar #guide-button,
+/*body.hide_sidebar #guide-button,
 body.hide_sidebar ytd-mini-guide-renderer,
 body.hide_sidebar #guide-wrapper {
+  display: none !important;
+}*/
+
+body.hide_sidebar ytd-guide-section-renderer:nth-child(2){
   display: none !important;
 }
 
