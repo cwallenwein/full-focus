@@ -1,0 +1,25 @@
+{
+  "name": "code",
+  "version": "1.0.0",
+  "description": "Full Focus is a Chrome Extension that removes recommendations and other distracting elements from youtube.\r Download it [here](https://chrome.google.com/webstore/detail/full-focus-hide-recommend/ngdenbkjmenmpmjcmoalhkommflcdilh)",
+  "main": "index.js",
+  "dependencies": {},
+  "devDependencies": {
+    "@types/chrome": "0.0.180",
+    "typescript": "^4.6.3"
+  },
+  "scripts": {
+    "build": "tsc --build --force"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/chriswallenwein/FullFocus.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/chriswallenwein/FullFocus/issues"
+  },
+  "homepage": "https://github.com/chriswallenwein/FullFocus#readme"
+}
