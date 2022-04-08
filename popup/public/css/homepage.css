@@ -1,0 +1,36 @@
+/* --- hide_recommendations --- */
+body #chips-wrapper,
+body ytd-browse #contents {
+  display: none !important;
+}
+
+/* --- hide_thumbnails (+ video previews) --- */
+body #primary img {
+  display: none !important;
+}
+body #preview,
+body #hover-overlays {
+  display: none !important;
+}
+
+/* --- hide_sidebar --- */
+body ytd-guide-section-renderer:nth-child(1),
+body ytd-guide-section-renderer:nth-child(2),
+body ytd-guide-section-renderer:nth-child(3),
+body ytd-mini-guide-entry-renderer:nth-child(2),
+body ytd-mini-guide-entry-renderer:nth-child(3),
+body ytd-mini-guide-entry-renderer:nth-child(4),
+body ytd-mini-guide-entry-renderer:nth-child(5) {
+  display: none !important;
+}
+
+/* --- hide_shorts --- */
+body ytd-shorts {
+  display: none !important;
+}
+
+/* --- hide_ads --- */
+body #masthead-ad.ytd-rich-grid-renderer,
+body ytd-promoted-sparkles-web-renderer {
+  display: none !important;
+}
