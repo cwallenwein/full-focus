@@ -9,16 +9,16 @@
   },
   "permissions": ["storage", "tabs"],
   "background": {
-    "service_worker": "js/worker.js"
+    "service_worker": "src/worker.js"
   },
   "content_scripts": [
     {
       "matches": ["https://www.youtube.com/*"],
       "run_at": "document_end",
-      "js": ["js/content.js"]
+      "js": ["src/content.js"]
     }
   ],
   "action": {
-    "default_popup": "html/popup.html"
+    "default_popup": "src/popup/popup.html"
   }
 }

@@ -1,12 +1,16 @@
 {
   "compilerOptions": {
-    "strict": true,
     "target": "es2017",
+
+    "forceConsistentCasingInFileNames": true,
+    "noImplicitReturns": true,
+    "strict": true,
+    "noUnusedLocals": true,
+
     "esModuleInterop": false,
     "sourceMap": false,
-    "rootDir": "ts",
-    "outDir": "js",
     "noEmitOnError": true,
+
     "typeRoots": ["node_modules/@types"],
     "types": ["chrome"]
   }
