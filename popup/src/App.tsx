@@ -18,6 +18,7 @@ const App: FC = () => {
 
   const updateState = (active: boolean, _event: Event) => {
     setExtensionActive(active);
+    setIcon(active);
     chrome.storage.local.set({ active });
     chrome.tabs.query({ url: "https://www.youtube.com/*" }, function (tabs) {
       tabs.forEach((tab: chrome.tabs.Tab) => {
@@ -93,6 +94,18 @@ function showingVideoplayer(url: string) {
 
 function showingYouTubeShortsPage(url: string) {
   return url.startsWith("https://www.youtube.com/shorts/");
+}
+
+function setIcon(active: boolean) {
+  if (active) {
+    chrome.action.setIcon({
+      path: "./img/pause.png",
+    });
+  } else {
+    chrome.action.setIcon({
+      path: "./img/play.png",
+    });
+  }
 }
 
 export default App;
