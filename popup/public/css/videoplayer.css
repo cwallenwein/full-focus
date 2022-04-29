@@ -5,20 +5,6 @@ body .ytp-ce-video {
   display: none !important;
 }
 
-/* --- hide_thumbnails (+ video previews) --- */
-body contents img {
-  display: none !important;
-}
-body #preview,
-body #hover-overlays {
-  display: none !important;
-}
-
-/* --- hide_playlists --- */
-body #playlist {
-  display: none !important;
-}
-
 /* --- hide_sidebar --- */
 body ytd-guide-section-renderer:nth-child(1),
 body ytd-guide-section-renderer:nth-child(2),
@@ -39,5 +25,11 @@ body #chat {
 /* --- hide_merch --- */
 body #merch-shelf,
 body ytd-merch-shelf-renderer {
+  display: none !important;
+}
+
+/* --- hide_ads --- */
+body .ytp-ad-text-overlay,
+body .video-ads {
   display: none !important;
 }
