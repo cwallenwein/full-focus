@@ -4,15 +4,6 @@ body ytd-browse #contents {
   display: none !important;
 }
 
-/* --- hide_thumbnails (+ video previews) --- */
-body #primary img {
-  display: none !important;
-}
-body #preview,
-body #hover-overlays {
-  display: none !important;
-}
-
 /* --- hide_sidebar --- */
 body ytd-guide-section-renderer:nth-child(1),
 body ytd-guide-section-renderer:nth-child(2),
