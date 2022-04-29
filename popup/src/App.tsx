@@ -69,7 +69,11 @@ const App: FC = () => {
         title="Full Focus"
         extra={toggleAllOptionsCheckbox}
         style={{ width: 250 }}
-        actions={[<a href="#">Give Feedback</a>]}
+        actions={[
+          <a href="https://go.cwallenwein.com/projects/fullfocus/feedback" target="_blank">
+            Give Feedback
+          </a>,
+        ]}
       ></Card>
     </>
   );
