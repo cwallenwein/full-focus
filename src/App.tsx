@@ -3,10 +3,6 @@ import { Card, Switch } from "antd";
 import { CloseOutlined, CheckOutlined } from "@ant-design/icons";
 import "./App.css";
 
-// TODO: move to extension code, make new popup open when extension icon is clicked
-// TODO: initalize state with extension state
-// TODO: update extension state
-
 const App: FC = () => {
   const [extensionActive, setExtensionActive] = useState(false);
 
@@ -47,10 +43,8 @@ const App: FC = () => {
     }
 
     if (active) {
-      console.log("insert", stylesheet);
       chrome.scripting.insertCSS(stylesheet);
     } else {
-      console.log("remove", stylesheet);
       chrome.scripting.removeCSS(stylesheet);
     }
   };
@@ -81,7 +75,7 @@ const App: FC = () => {
 };
 
 function showingHomepage(url: string) {
-  return url == "https://www.youtube.com/" || url.startsWith("https://www.youtube.com/#");
+  return url === "https://www.youtube.com/" || url.startsWith("https://www.youtube.com/#");
 }
 
 function showingSearchResults(url: string) {

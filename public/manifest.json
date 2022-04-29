@@ -5,7 +5,7 @@
   "description": "Boost productivity - Hide all distractions on YouTube",
   "version": "0.2.3",
   "icons": {
-    "128": "img/icon.png"
+    "128": "img/pause.png"
   },
   "permissions": ["scripting", "storage", "tabs"],
   "host_permissions": ["http://www.youtube.com/*", "https://www.youtube.com/*"],
