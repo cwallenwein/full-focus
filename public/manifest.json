@@ -3,7 +3,7 @@
   "name": "Full Focus - Hide Recommendations on YouTube",
   "short_name": "Full Focus",
   "description": "Boost productivity - Hide all distractions on YouTube",
-  "version": "0.2.3",
+  "version": "0.3",
   "icons": {
     "128": "img/pause.png"
   },

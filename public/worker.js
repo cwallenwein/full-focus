@@ -29,7 +29,12 @@ function sendStateToTabs(tabs, active) {
 
 function updateTab(tab, active) {
   let stylesheet;
-  if (showingHomepage(tab.url) || showingSearchResults(tab.url) || showingYouTubeShortsPage(tab.url)) {
+  if (
+    showingHomepage(tab.url) ||
+    showingSearchResults(tab.url) ||
+    showingYouTubeShorts(tab.url) ||
+    showingYouTubeChannels(tab.url)
+  ) {
     stylesheet = {
       target: { tabId: tab.id },
       files: ["css/homepage.css"],
@@ -66,6 +71,10 @@ function showingVideoplayer(url) {
   return url.startsWith("https://www.youtube.com/watch");
 }
 
-function showingYouTubeShortsPage(url) {
+function showingYouTubeShorts(url) {
   return url.startsWith("https://www.youtube.com/shorts/");
+}
+
+function showingYouTubeChannels(url) {
+  return url.startsWith("https://www.youtube.com/channel/");
 }
