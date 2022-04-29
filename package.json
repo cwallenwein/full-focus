@@ -1,25 +1,47 @@
 {
-  "name": "code",
-  "version": "1.0.0",
-  "description": "Full Focus is a Chrome Extension that removes recommendations and other distracting elements from youtube.\r Download it [here](https://chrome.google.com/webstore/detail/full-focus-hide-recommend/ngdenbkjmenmpmjcmoalhkommflcdilh)",
-  "main": "index.js",
-  "dependencies": {},
+  "name": "extension",
+  "version": "0.1.0",
+  "private": true,
+  "dependencies": {
+    "@testing-library/jest-dom": "^5.16.4",
+    "@testing-library/react": "^12.1.4",
+    "@testing-library/user-event": "^13.5.0",
+    "@types/jest": "^27.4.1",
+    "@types/node": "^16.11.26",
+    "@types/react": "^17.0.43",
+    "@types/react-dom": "^17.0.14",
+    "antd": "^4.19.5",
+    "react": "^18.0.0",
+    "react-dom": "^18.0.0",
+    "react-scripts": "5.0.0",
+    "typescript": "^4.6.3",
+    "web-vitals": "^2.1.4"
+  },
   "devDependencies": {
-    "@types/chrome": "0.0.180",
-    "typescript": "^4.6.3"
+    "@types/chrome": "0.0.180"
   },
   "scripts": {
-    "build": "tsc --build --force"
+    "start": "react-scripts start",
+    "build": "INLINE_RUNTIME_CHUNK=false GENERATE_SOURCEMAP=false react-scripts build",
+    "test": "react-scripts test",
+    "eject": "react-scripts eject"
   },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/chriswallenwein/FullFocus.git"
+  "eslintConfig": {
+    "extends": [
+      "react-app",
+      "react-app/jest"
+    ]
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/chriswallenwein/FullFocus/issues"
-  },
-  "homepage": "https://github.com/chriswallenwein/FullFocus#readme"
+  "browserslist": {
+    "production": [
+      ">0.2%",
+      "not dead",
+      "not op_mini all"
+    ],
+    "development": [
+      "last 1 chrome version",
+      "last 1 firefox version",
+      "last 1 safari version"
+    ]
+  }
 }
