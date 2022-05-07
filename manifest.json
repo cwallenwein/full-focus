@@ -13,6 +13,6 @@
     "service_worker": "worker.js"
   },
   "action": {
-    "default_popup": "index.html"
+    "default_popup": "popup/build/index.html"
   }
 }
