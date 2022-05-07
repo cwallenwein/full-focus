@@ -30,6 +30,6 @@ body ytd-merch-shelf-renderer {
 
 /* --- hide_ads --- */
 body .ytp-ad-player-overlay-flyout-cta,
-body .video-ads {
+body ytd-action-companion-ad-renderer {
   display: none !important;
 }

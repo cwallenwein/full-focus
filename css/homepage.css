@@ -21,7 +21,6 @@ body ytd-shorts {
 }
 
 /* --- hide_ads --- */
-body #masthead-ad.ytd-rich-grid-renderer,
-body ytd-promoted-sparkles-web-renderer {
+body .ytd-banner-promo-renderer-background {
   display: none !important;
 }
