@@ -1,6 +1,6 @@
 /* --- hide_recommendations --- */
 body #chips-wrapper,
-body ytd-browse[page-subtype="channels"] #contents {
+body ytd-browse[page-subtype="home"] #contents {
   display: none !important;
 }
 
