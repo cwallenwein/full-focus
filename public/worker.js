@@ -1,7 +1,9 @@
 "use strict";
 
 chrome.runtime.onInstalled.addListener(() => {
-  chrome.storage.local.set({ active: false });
+  const initialState = false;
+  setIcon(initialState);
+  chrome.storage.local.set({ active: initialState });
 });
 
 chrome.tabs.onCreated.addListener(function (tab) {
@@ -77,4 +79,16 @@ function showingYouTubeShorts(url) {
 
 function showingYouTubeChannels(url) {
   return url.startsWith("https://www.youtube.com/channel/");
+}
+
+function setIcon(active) {
+  if (active) {
+    chrome.action.setIcon({
+      path: "./img/pause.png",
+    });
+  } else {
+    chrome.action.setIcon({
+      path: "./img/play.png",
+    });
+  }
 }
