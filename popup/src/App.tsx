@@ -102,11 +102,11 @@ function showingYouTubeChannels(url: string) {
 function setIcon(active: boolean) {
   if (active) {
     chrome.action.setIcon({
-      path: "./img/pause.png",
+      path: "../../img/pause.png",
     });
   } else {
     chrome.action.setIcon({
-      path: "./img/play.png",
+      path: "../../img/play.png",
     });
   }
 }
