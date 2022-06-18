@@ -4,7 +4,7 @@ A Browser Extension that removes recommendations and other distracting elements 
 # Table of Contents
 - [Extension](#extension)
   - [Getting started](#getting-started)
-  - [Popup](#endpoints)
+  - [Popup](#popup)
   
 # Extension
 The extension is based on manifest version 3
