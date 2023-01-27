@@ -19,7 +19,7 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
-    "@types/chrome": "0.0.180"
+    "@types/chrome": "0.0.210"
   },
   "scripts": {
     "start": "react-scripts start",
