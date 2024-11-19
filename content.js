@@ -13,7 +13,7 @@ const CONFIG = {
     }
 };
 
-class YouTubeFocus {
+class FullFocus {
     constructor() {
         this.settings = {};
         this.contentObserver = null;
@@ -96,4 +96,4 @@ class YouTubeFocus {
 }
 
 // Initialize the application
-new YouTubeFocus();
+new FullFocus();

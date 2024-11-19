@@ -1,12 +1,12 @@
 {
     "manifest_version": 3,
-    "name": "YouTube Focus",
+    "name": "Full Focus - Hide Recommendations on YouTube",
+    "short_name": "Full Focus",
+    "description": "Boost productivity - Hide all distractions on YouTube",
     "version": "1.0",
-    "description": "Make YouTube less distracting",
     "permissions": [
         "storage",
-        "scripting",
-        "activeTab"
+        "scripting"
     ],
     "host_permissions": [
         "https://*.youtube.com/*"
