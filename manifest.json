@@ -1,18 +1,41 @@
 {
-  "manifest_version": 3,
-  "name": "Full Focus - Hide Recommendations on YouTube",
-  "short_name": "Full Focus",
-  "description": "Boost productivity - Hide all distractions on YouTube",
-  "version": "0.3",
-  "icons": {
-    "128": "img/pause.png"
-  },
-  "permissions": ["scripting", "storage", "tabs"],
-  "host_permissions": ["http://www.youtube.com/*", "https://www.youtube.com/*"],
-  "background": {
-    "service_worker": "worker.js"
-  },
-  "action": {
-    "default_popup": "popup/build/index.html"
-  }
+    "manifest_version": 3,
+    "name": "YouTube Focus",
+    "version": "1.0",
+    "description": "Make YouTube less distracting",
+    "permissions": [
+        "storage",
+        "scripting",
+        "activeTab"
+    ],
+    "host_permissions": [
+        "https://*.youtube.com/*"
+    ],
+    "icons": {
+        "48": "img/inactive.png",
+        "128": "img/inactive.png"
+    },
+    "action": {
+        "default_popup": "popup.html",
+        "default_icon": {
+            "48": "img/inactive.png",
+            "128": "img/inactive.png"
+        }
+    },
+    "background": {
+        "service_worker": "background.js"
+    },
+    "content_scripts": [
+        {
+            "matches": [
+                "https://*.youtube.com/*"
+            ],
+            "css": [
+                "styles.css"
+            ],
+            "js": [
+                "content.js"
+            ]
+        }
+    ]
 }

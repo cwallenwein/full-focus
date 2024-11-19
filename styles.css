@@ -1,0 +1,53 @@
+/* Common styles */
+.full-focus-hide {
+  display: none !important;
+}
+
+.full-focus-invisible {
+  visibility: hidden !important;
+}
+
+/* Hide homepage elements */
+.full-focus-hide-home ytd-rich-grid-renderer,
+.full-focus-hide-home ytd-rich-grid-row,
+.full-focus-hide-home ytd-two-column-browse-results-renderer {
+  display: none !important;
+}
+
+/* Hide recommendations */
+.full-focus-hide-recommendations ytd-watch-next-secondary-results-renderer,
+.full-focus-hide-recommendations .ytp-endscreen-content {
+  display: none !important;
+}
+
+/* Hide comments */
+.full-focus-hide-comments ytd-comments {
+  display: none !important;
+}
+
+/* Hide shorts */
+.full-focus-hide-shorts ytd-reel-shelf-renderer,
+.full-focus-hide-shorts ytd-mini-guide-entry-renderer[aria-label="Shorts"] {
+  display: none !important;
+}
+
+/* Hide thumbnails */
+.full-focus-hide-thumbnails .yt-img-shadow,
+.full-focus-hide-thumbnails .ytp-videowall-still-image {
+  visibility: hidden !important;
+}
+
+/* Hide ads */
+.full-focus-hide-ads .ytp-ad-player-overlay-flyout-cta,
+.full-focus-hide-ads ytd-action-companion-ad-renderer,
+.full-focus-hide-ads .ytp-ad-overlay-container,
+.full-focus-hide-ads .video-ads.ytp-ad-module,
+.full-focus-hide-ads ytd-promoted-sparkles-web-renderer,
+.full-focus-hide-ads ytd-promoted-video-renderer,
+.full-focus-hide-ads ytd-display-ad-renderer,
+.full-focus-hide-ads .ytd-promoted-sparkles-text-search-renderer,
+.full-focus-hide-ads .ytd-promoted-video-renderer,
+.full-focus-hide-ads tp-yt-paper-dialog.ytd-popup-container,
+.full-focus-hide-ads .ytp-ad-skip-button-container {
+  display: none !important;
+}

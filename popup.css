@@ -1,0 +1,199 @@
+/* Variables */
+:root {
+    --primary-color: #FF4E45;
+    --primary-hover: #FF6B64;
+    --bg-color: #ffffff;
+    --text-color: #333333;
+    --text-secondary: #666666;
+    --border-color: #E5E7EB;
+    --toggle-bg: #E5E7EB;
+    --toggle-bg-checked: #FF4E45;
+    --toggle-knob: #ffffff;
+    --bg-light: #F9FAFB;
+    --bg-lighter: #F3F4F6;
+    --success-bg: #ECFDF5;
+    --success-text: #065F46;
+  }
+  
+  /* Base styles */
+  body {
+    width: 320px;
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    color: var(--text-color);
+    background: var(--bg-color);
+  }
+  
+  .container {
+    padding: 20px;
+  }
+  
+  /* Header styles */
+  header {
+    margin-bottom: 24px;
+  }
+  
+  h1 {
+    margin: 0;
+    font-size: 24px;
+    font-weight: 600;
+    color: var(--primary-color);
+  }
+  
+  .subtitle {
+    margin: 4px 0 0;
+    font-size: 14px;
+    color: var(--text-secondary);
+  }
+  
+  /* Settings layout */
+  .settings {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+  
+  .master-control {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    background: var(--bg-lighter);
+    border-radius: 8px;
+    border-left: 3px solid var(--primary-color);
+  }
+  
+  .setting-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    background: var(--bg-light);
+    border-radius: 8px;
+    transition: background-color 0.2s;
+  }
+  
+  .setting-item:hover {
+    background: var(--bg-lighter);
+  }
+  
+  /* Setting information */
+  .setting-info {
+    flex: 1;
+    padding-right: 12px;
+  }
+  
+  .setting-info label {
+    display: block;
+    font-weight: 500;
+    font-size: 14px;
+    margin-bottom: 2px;
+  }
+  
+  .description {
+    display: block;
+    font-size: 12px;
+    color: var(--text-secondary);
+  }
+  
+  .divider {
+    height: 1px;
+    background: var(--border-color);
+    margin: 8px 0;
+  }
+  
+  /* Toggle switch styles */
+  .master-checkbox,
+  .feature-checkbox {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0;
+    width: 0;
+  }
+  
+  .master-checkbox-label,
+  .checkbox-label {
+    position: relative;
+    display: inline-block;
+    width: 44px;
+    height: 24px;
+    background: var(--toggle-bg);
+    border-radius: 12px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .master-checkbox-label::after,
+  .checkbox-label::after {
+    content: '';
+    position: absolute;
+    top: 3px;
+    left: 3px;
+    width: 18px;
+    height: 18px;
+    background: var(--toggle-knob);
+    border-radius: 50%;
+    transition: transform 0.2s;
+  }
+  
+  /* Toggle states */
+  input:checked + .master-checkbox-label,
+  input:checked + .checkbox-label {
+    background: var(--toggle-bg-checked);
+  }
+  
+  input:checked + .master-checkbox-label::after,
+  input:checked + .checkbox-label::after {
+    transform: translateX(20px);
+  }
+  
+  input:indeterminate + .master-checkbox-label {
+    background: var(--primary-hover);
+  }
+  
+  input:indeterminate + .master-checkbox-label::after {
+    transform: translateX(10px);
+  }
+  
+  /* Status message */
+  .status {
+    margin-top: 12px;
+    padding: 6px;
+    border-radius: 6px;
+    font-size: 13px;
+    text-align: center;
+    opacity: 0;
+    transition: opacity 0.3s;
+    background-color: var(--success-bg);
+    color: var(--success-text);
+  }
+  
+  .status.show {
+    opacity: 1;
+  }
+  
+  /* Feedback section */
+  .feedback-container {
+    margin-top: 12px;
+    padding-top: 12px;
+    border-top: 1px solid var(--border-color);
+    text-align: center;
+  }
+  
+  .feedback-button {
+    background-color: transparent;
+    color: var(--text-secondary);
+    border: 1px solid var(--border-color);
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 14px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .feedback-button:hover {
+    background-color: var(--bg-lighter);
+    color: var(--text-color);
+    border-color: var(--text-secondary);
+  }

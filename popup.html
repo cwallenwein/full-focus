@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="popup.css">
+    <title>YouTube Focus</title>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>YouTube Focus</h1>
+            <p class="subtitle">Customize your distraction-free experience</p>
+        </header>
+        
+        <main class="settings">
+            <section class="master-control">
+                <div class="setting-info">
+                    <label for="masterToggle">All Features</label>
+                    <span class="description">Toggle all features at once</span>
+                </div>
+                <input type="checkbox" id="masterToggle" class="master-checkbox">
+                <label for="masterToggle" class="master-checkbox-label" aria-label="Toggle all features"></label>
+            </section>
+
+            <hr class="divider">
+
+            <section class="feature-toggles">
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <label for="hideHome">Hide Home Feed</label>
+                        <span class="description">Remove the main page feed</span>
+                    </div>
+                    <input type="checkbox" id="hideHome" class="feature-checkbox">
+                    <label for="hideHome" class="checkbox-label" aria-label="Toggle home feed"></label>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <label for="hideRecommendations">Hide Recommendations</label>
+                        <span class="description">Remove sidebar suggestions</span>
+                    </div>
+                    <input type="checkbox" id="hideRecommendations" class="feature-checkbox">
+                    <label for="hideRecommendations" class="checkbox-label" aria-label="Toggle recommendations"></label>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <label for="disableAutoplay">Disable Autoplay</label>
+                        <span class="description">Stop automatic next video</span>
+                    </div>
+                    <input type="checkbox" id="disableAutoplay" class="feature-checkbox">
+                    <label for="disableAutoplay" class="checkbox-label" aria-label="Toggle autoplay"></label>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <label for="hideComments">Hide Comments</label>
+                        <span class="description">Remove comment section</span>
+                    </div>
+                    <input type="checkbox" id="hideComments" class="feature-checkbox">
+                    <label for="hideComments" class="checkbox-label" aria-label="Toggle comments"></label>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <label for="hideShorts">Hide Shorts</label>
+                        <span class="description">Remove short-form videos</span>
+                    </div>
+                    <input type="checkbox" id="hideShorts" class="feature-checkbox">
+                    <label for="hideShorts" class="checkbox-label" aria-label="Toggle shorts"></label>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <label for="hideThumbnails">Hide Thumbnails</label>
+                        <span class="description">Show titles only</span>
+                    </div>
+                    <input type="checkbox" id="hideThumbnails" class="feature-checkbox">
+                    <label for="hideThumbnails" class="checkbox-label" aria-label="Toggle thumbnails"></label>
+                </div>
+
+                <div class="setting-item">
+                    <div class="setting-info">
+                        <label for="hideAds">Hide Ads</label>
+                        <span class="description">Remove advertisement elements</span>
+                    </div>
+                    <input type="checkbox" id="hideAds" class="feature-checkbox">
+                    <label for="hideAds" class="checkbox-label" aria-label="Toggle ads"></label>
+                </div>
+            </section>
+        </main>
+
+        <div id="status" class="status" role="status" aria-live="polite"></div>
+
+        <footer class="feedback-container">
+            <button id="feedbackButton" class="feedback-button">
+                Give feedback
+            </button>
+        </footer>
+    </div>
+    <script src="popup.js"></script>
+</body>
+</html>
